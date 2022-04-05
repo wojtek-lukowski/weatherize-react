@@ -6,7 +6,7 @@ const key = config.API_KEY;
 
 function Dashboard() {
 
-  const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Los Angeles']);
+  const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Sevilla']);
 
   return (
     <div className="App">

@@ -34,7 +34,6 @@ export class CurrentLocationCard extends React.Component {
   }
 
   async getWeather() {
-    console.log('calling getWeather');
     try {
       const lat = localStorage.getItem('latitude');
       const lng = localStorage.getItem('longitude');
@@ -63,8 +62,8 @@ export class CurrentLocationCard extends React.Component {
         <div>
           {this.state.location &&
             <div className="">
-              <div>{this.state.location}, {this.state.country}</div>
-              <div>{this.state.temperature} C°</div>
+              <div className="bold">{this.state.location}, {this.state.country}</div>
+              <div className="bold">{this.state.temperature} C°</div>
               <div>{this.state.sky}</div>
               <div>{this.state.windSpeed} m/s {this.state.windDirection}°</div>
             </div>
