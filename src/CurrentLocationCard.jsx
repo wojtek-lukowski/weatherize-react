@@ -51,17 +51,15 @@ export class CurrentLocationCard extends React.Component {
     return (
       // <div>test - {this.state.location}</div>
       <div>
-        <div>
-          <div>Your current location:</div>
-          {this.state.location &&
-            <div className="">
-              <div className="bold">{this.state.location}, {this.state.country}</div>
-              <div className="bold">{this.state.temperature} C°</div>
-              <div>{this.state.sky}</div>
-              <div>{this.state.windSpeed} m/s {this.state.windDirection}°</div>
-            </div>
-          }
-        </div>
+        <div>Your current location:</div>
+        {this.state.location &&
+          <div className="">
+            <div className="bold">{this.state.location}, {this.state.country}</div>
+            <div className="bold">{this.state.temperature} C°</div>
+            <div>{this.state.sky}</div>
+            <div>{this.state.windSpeed} m/s {this.state.windDirection}°</div>
+          </div>
+        }
       </div>
     )
   }

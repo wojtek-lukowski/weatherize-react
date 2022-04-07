@@ -3,11 +3,12 @@ import { LocationCard } from "./LocationCard";
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Router, Routes, Link } from 'react-router-dom';
 import { config } from './config';
+import Favorites from './Favorites';
 const key = config.API_KEY;
 
 function Dashboard() {
 
-  const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Sevilla']);
+  const [user, setUser] = useState(null);
 
   return (
 
@@ -16,19 +17,18 @@ function Dashboard() {
     // </div>
     <div className="App">
       {/* <Link> */}
-      <CurrentLocationCard />
+      <Link to='/longterm' className="card">
+        <CurrentLocationCard />
+      </Link>
       {/* </Link> */}
       <br></br>
-      <div>Favorites:
-        {favorites.map(city =>
-          <div key={city}>
-            <LocationCard city={city} />
-            <br></br>
-          </div>
-        )}
-      </div>
+      {user &&
+        <Favorites />
+      }
       <nav>
         <Link to='/login'>Login</Link>
+        <br></br>
+        <Link to='/register'>Create Account</Link>
       </nav>
     </div>
   );
