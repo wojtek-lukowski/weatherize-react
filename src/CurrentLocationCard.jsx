@@ -22,6 +22,8 @@ export class CurrentLocationCard extends React.Component {
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.getWeather(position.coords.latitude, position.coords.longitude);
+        localStorage.setItem('latitude', position.coords.latitude);
+        localStorage.setItem('longitude', position.coords.longitude);
       });
     } catch (err) {
       console.log(err);
@@ -41,6 +43,8 @@ export class CurrentLocationCard extends React.Component {
         windSpeed: data.wind.speed,
         windDirection: data.wind.deg
       })
+      localStorage.setItem('location', data.name);
+      localStorage.setItem('country', data.sys.country);
     } catch (err) {
       console.log(err);
     }

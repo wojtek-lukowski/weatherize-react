@@ -7,7 +7,7 @@ const key = config.API_KEY;
 
 function Favorites() {
 
-  const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Sevilla']);
+  const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Malaga']);
 
   return (
     <div>Favorites:

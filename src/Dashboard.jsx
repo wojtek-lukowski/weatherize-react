@@ -16,11 +16,9 @@ function Dashboard() {
     //   <CurrentLocationCard />
     // </div>
     <div className="App">
-      {/* <Link> */}
-      <Link to='/longterm' className="card">
+      <Link to='/hourly' className="card">
         <CurrentLocationCard />
       </Link>
-      {/* </Link> */}
       <br></br>
       {user &&
         <Favorites />
