@@ -34,7 +34,7 @@ export class CurrentLocationCard extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      console.log(data);
+
       this.setState({
         location: data.name,
         country: data.sys.country,
