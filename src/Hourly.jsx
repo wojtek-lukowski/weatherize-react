@@ -3,57 +3,83 @@ import { Link } from 'react-router-dom';
 import { config } from './config';
 const key = config.API_KEY;
 
-function Login() {
+export class Hourly extends React.Component {
 
-  // const [tempHourly, setTempHourly] = useState([]);
+  constructor() {
+    super();
 
-  const tempHourly = [];
+    this.state = {
+      location: '',
+      country: '',
+      cards: []
+    }
+  }
 
-  const location = localStorage.getItem('location');
-  const country = localStorage.getItem('country');
-
-  useEffect(() => {
-    const lat = localStorage.getItem('latitude');
-    const lng = localStorage.getItem('longitude');
-    getWeather(lat, lng);
-  })
-
-  async function getWeather(lat, lng) {
+  async componentDidMount() {
     try {
-      const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
-      const data = await (await fetch(api)).json();
-      console.log(data);
-      // console.log(data.hourly);
-      const baz = (data.hourly);
-
-      const foo = [];
-
-      // setTempHourly([]);
-
-      for (let i = 0; i < baz.length; i++) {
-        tempHourly.push((data.hourly[i].temp - 273.15).toFixed(1));
-      }
-      console.log(foo);
-
-      // setTempHourly(foo);
-      console.log(tempHourly);
+      const lat = localStorage.getItem('latitude');
+      const lng = localStorage.getItem('longitude');
+      const location = localStorage.getItem('location');
+      const country = localStorage.getItem('country');
+      this.setState({
+        location,
+        country
+      })
+      this.getWeather(lat, lng);
     } catch (err) {
       console.log(err);
     }
   };
 
-  return (
-    <div>
-      <h2>{location}, {country}</h2>
-      <h2>Hourly</h2>
-      {tempHourly.map(hour =>
-        <p>{hour}</p>)
-      }
-      <nav>
-        <Link to='/'>Home</Link>
-      </nav>
-    </div>
-  );
-}
+  async getWeather(lat, lng) {
+    try {
+      const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
+      const data = await (await fetch(api)).json();
+      // console.log(data);
+      console.clear();
+      console.log('data.hourly', data.hourly);
+      // console.log(data.daily);
 
-export default Login;
+
+      let preaparingCards = [];
+      const numberOfRecords = data.hourly.length;
+
+      for (let i = 0; i < numberOfRecords; i++) {
+
+        let card = {
+          time: '',
+          temperature: ''
+        };
+
+        card.time = (data.hourly[i].dt).getUTCdate();
+        card.temperature = ((data.hourly[i].temp - 273.15).toFixed(1));
+        preaparingCards.push(card);
+      }
+
+      this.setState({
+        cards: preaparingCards
+      })
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <div>Your current location:</div>
+        {this.state.location &&
+          <div className="">
+            <div className="bold">{this.state.location}, {this.state.country}</div>
+            <div>
+              {(this.state.cards).map((hour, index) =>
+                <div key={index}>{this.state.cards[index].time}, {this.state.cards[index].temperature}</div>
+              )}
+            </div>
+          </div>
+        }
+      </div>
+    )
+  }
+}
