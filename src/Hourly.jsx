@@ -51,7 +51,7 @@ export class Hourly extends React.Component {
           temperature: ''
         };
 
-        card.time = (data.hourly[i].dt).getUTCdate();
+        card.time = data.hourly[i].dt;
         card.temperature = ((data.hourly[i].temp - 273.15).toFixed(1));
         preaparingCards.push(card);
       }
