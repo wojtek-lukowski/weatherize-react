@@ -88,6 +88,15 @@ export class Hourly extends React.Component {
         preaparingHourlyCards.push(card);
       }
 
+      // let card = {
+      //   time: 'Time',
+      //   temperature: 'Temp',
+      //   feelsLike: 'Feels Like',
+      //   pressure: 'Pressure',
+      //   humidity: 'Humidity'
+      // };
+      // preaparingHourlyCards.unshift(card);
+
       this.setState({
         hourlyCards: preaparingHourlyCards
       })
@@ -176,7 +185,7 @@ export class Hourly extends React.Component {
         </Link>
         <div>Your current location:</div>
         {this.state.location &&
-          <div className="">
+          <div>
             <div className="bold">{this.state.location}, {this.state.country}</div>
             {this.state.hourly ?
               <button onClick={this.toggleHourly}>Daily</button> :
@@ -184,10 +193,23 @@ export class Hourly extends React.Component {
             }
             {this.state.hourly ?
               <div>
-                <div>
-                  <div>hourly:</div>
+                {/* <div>hourly:</div> */}
+                <div className='hourly-cards-container'>
+                  <ul className="hourly-card fixed">
+                    <li>Time</li>
+                    <li>Temp</li>
+                    <li>Feels like</li>
+                    <li>Pressure</li>
+                    <li>Humidity</li>
+                  </ul>
                   {(this.state.hourlyCards).map((hour, index) =>
-                    <div key={index}>{this.state.hourlyCards[index].time} {this.state.hourlyCards[index].temperature} C° {this.state.hourlyCards[index].feelsLike} C° {this.state.hourlyCards[index].pressure}hPa {this.state.hourlyCards[index].humidity}%</div>
+                    <ul className="hourly-card" key={index}>
+                      <li>{this.state.hourlyCards[index].time}:00</li>
+                      <li>{this.state.hourlyCards[index].temperature} C°</li>
+                      <li>{this.state.hourlyCards[index].feelsLike} C°</li>
+                      <li>{this.state.hourlyCards[index].pressure}hPa</li>
+                      <li>{this.state.hourlyCards[index].humidity}%</li>
+                    </ul>
                   )}
                 </div>
               </div>
@@ -195,7 +217,8 @@ export class Hourly extends React.Component {
               <div>
                 <div><div>daily:</div>
                   {(this.state.dailyCards).map((day, index) =>
-                    <div key={index}>{this.state.dailyCards[index].time} {this.state.dailyCards[index].temperature} C°</div>
+                    <div key={index}>{this.state.dailyCards[index].time}
+                      {this.state.dailyCards[index].temperature} C°</div>
                   )}
                 </div>
               </div>

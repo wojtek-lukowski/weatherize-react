@@ -10,11 +10,11 @@ function Favorites() {
   const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Malaga']);
 
   return (
-    <div>Favorites:
+    <div className="favs">
+      <p className='grey'>Favorites</p>
       {favorites.map(city =>
         <div key={city}>
           <LocationCard city={city} />
-          <br></br>
         </div>
       )}
     </div>

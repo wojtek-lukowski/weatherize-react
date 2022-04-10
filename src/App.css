@@ -42,9 +42,12 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-@import './loading.scss'
+@import './variables.css';
+/* @import './loading.css'; */
+@import './main.css'

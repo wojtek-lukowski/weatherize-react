@@ -49,20 +49,24 @@ export class LocationCard extends React.Component {
 
     return (
       // <div>{this.props.city}</div>
-      <div>
-        <div>
-          {this.state.location &&
-            <div className="">
-              <div className="bold">{this.props.city}, {this.state.country}</div>
-              <div className="bold">{this.state.temperature} C°</div>
-              <div>feels like {this.state.feelsLike} C°</div>
-              <div>max {this.state.tempMax} C°</div>
-              <div>min {this.state.tempMin} C°</div>
-              <div>{this.state.sky}</div>
-              <div>{this.state.windSpeed} m/s {this.state.windDirection}°</div>
-            </div>
-          }
-        </div>
+      <div className='favs'>
+        {this.state.location &&
+          <div className='current-location-card'>
+            <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
+            {/* <div className='main-data'>
+            <p className="temperature">{this.state.temperature} C°</p>
+            <p className='sky'>{this.state.sky}</p>
+          </div> */}
+            <ul>
+              <li className="temperature">{this.state.temperature} C°</li>
+              <li className='sky'>{this.state.sky}</li>
+              <li>{this.state.feelsLike} C°<span>feels like</span></li>
+              <li>{this.state.tempMin} C°<span>min</span></li>
+              <li>{this.state.tempMax} C°<span>max</span></li>
+              <li>{this.state.windSpeed} m/s {this.state.windDirection}°<span>wind</span></li>
+            </ul>
+          </div>
+        }
       </div>
     )
   }

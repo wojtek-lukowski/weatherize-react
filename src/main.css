@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: Montserrat;
+  font-size: 1.6rem;
+  color: var(--white);
+  background-image: var(--background-gradient);
+  background-repeat: no-repeat;
+  padding: var(--gutter);
+}
+
+.App h1 {
+  text-align: left;
+  margin-left: calc(var(--column2) + var(--page-padding));
+
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap2);
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li {
+  display: inline-block;
+  font-size: 1.6rem;
+}
+
+li span {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.current-location-card {
+  width: var(--column10);
+  margin: var(--gap) auto;
+  border-radius: var(--border-radius);
+  background-color: var(--card-background);
+  color: var(--white);
+  padding: var(--gap2);
+}
+
+.current-location-card:hover {
+  /* box-sizing: border-box; */
+  /* border: 1px solid var(--primary-color); */
+  transform: translate(0, -3px);
+}
+
+h2.location {
+  /* font-size: 1.75rem; */
+  font-weight: bold;
+  margin-top: 0;
+  text-align: left;
+}
+
+h2.location span {
+  color: var(--text-color);
+}
+
+.temperature,
+.sky {
+  display: inline-block;
+  font-size: 2rem;
+  /* font-weight: bold; */
+  color: var(--primary-color);
+  margin: var(--gap2) 0;
+}
+
+.main-data {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.grey {
+  color: var(--text-color);
+  text-align: left;
+  margin-left: calc(var(--column2) + var(--page-padding));
+  margin-bottom: 0;
+}
+
+.favs {
+  color: var(--text-color);
+  overflow-y: scroll;
+}
+
+.hourly-cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  overflow-x: scroll;
+  margin-left: calc(var(--page-padding) + var(--column3));
+}
+
+.hourly-cards-container ul li {
+  width: 100%;
+}
+
+.hourly-cards-container ul li:nth-of-type(1) {
+  border-bottom: 1px solid var(--white);
+  padding-bottom: var(--gap);
+}
+
+.hourly-card {
+  width: var(--column3);
+  margin: var(--gap) auto;
+  border-radius: var(--border-radius);
+  background-color: var(--card-background);
+  color: var(--white);
+  padding: var(--gap2);
+  border-top: 3px solid var(--primary-color);
+  justify-content: left;
+}
+
+.fixed {
+  position: absolute;
+  left: var(--page-padding);
+}
+
+.fixed li {
+  display: block !important;
+}

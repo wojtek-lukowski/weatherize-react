@@ -1,0 +1,46 @@
+:root {
+  --font-family: Manrope;
+
+  --gutter: calc(100vw / 45);
+  --column: calc(var(--gutter) * 2);
+
+  --column2: calc(var(--column) * 2 + var(--gutter));
+  --column3: calc(var(--column) * 3 + calc(var(--gutter) * 2));
+  --column4: calc(var(--column) * 4 + calc(var(--gutter) * 3));
+  --column5: calc(var(--column) * 5 + calc(var(--gutter) * 4));
+  --column6: calc(var(--column) * 6 + calc(var(--gutter) * 5));
+  --column7: calc(var(--column) * 7 + calc(var(--gutter) * 6));
+  --column8: calc(var(--column) * 8 + calc(var(--gutter) * 7));
+  --column9: calc(var(--column) * 9 + calc(var(--gutter) * 8));
+  --column10: calc(var(--column) * 10 + calc(var(--gutter) * 9));
+  --column11: calc(var(--column) * 11 + calc(var(--gutter) * 10));
+  --column12: calc(var(--column) * 12 + calc(var(--gutter) * 11));
+  --column13: calc(var(--column) * 13 + calc(var(--gutter) * 12));
+  --column14: calc(var(--column) * 14 + calc(var(--gutter) * 13));
+
+  --page: 100vw;
+  --page-padding: calc((var(--page) - var(--column14)) / 2);
+
+
+  --gap: 8px;
+  --gap0-5: calc(var(--gap)*0.5);
+  --gap1-5: calc(var(--gap)*1.5);
+  --gap2: calc(var(--gap)*2);
+  --gap3: calc(var(--gap)*3);
+  --gap4: calc(var(--gap)*4);
+  --gap5: calc(var(--gap)*5);
+  --gap6: calc(var(--gap)*6);
+  --gap7: calc(var(--gap)*7);
+  --gap8: calc(var(--gap)*8);
+
+  --primary-color: #35EC1D;
+  --background-color: #12233F;
+  --card-background: #333232;
+  --white: #ffff;
+  --black: #000000;
+  --text-color: #A3A3A3;
+  --dark-green: #1D3528;
+
+  --background-gradient: linear-gradient(180deg, #000, #131313);
+  --border-radius: 10px;
+}
