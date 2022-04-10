@@ -13,7 +13,9 @@ export class Hourly extends React.Component {
       country: '',
       hourlyCards: [],
       dailyCards: [],
-      minutelyCards: []
+      minutelyCards: [],
+      rainIn: null,
+      hourly: true
     }
   }
 
@@ -39,23 +41,50 @@ export class Hourly extends React.Component {
       const data = await (await fetch(api)).json();
       console.clear();
       console.log(data);
-      console.log('data.daily', data.daily);
-      console.log('data.hourly', data.hourly);
-      console.log('data.minutely', data.minutely);
+      // console.log('data.daily', data.daily);
+      // console.log('data.hourly', data.hourly);
+      // console.log('data.minutely', data.minutely);
       // console.log(data.daily);
 
       //setting up hourly cards
       let preaparingHourlyCards = [];
 
+      const hours24 = [];
+      for (let i = 0; i < 24; i++) {
+        hours24.push(i);
+      }
+
+      const hours48 = hours24.concat(hours24);
+
+      // console.log('hours48', hours48);
+
+      let timeNow = new Date();
+      timeNow = timeNow.toLocaleTimeString().split('');
+      timeNow = timeNow.splice(0, 2).join('');
+      timeNow = parseInt(timeNow);
+      timeNow = timeNow + 1;
+      // console.log('timeNow', timeNow, typeof timeNow);
+
+      const hours48Copy = [...hours48];
+      const currentTimeArray = hours48Copy.splice(timeNow).concat(hours48).splice(0, 48);
+      // currentTimeArray[0] = 'Now';
+
       for (let i = 0; i < data.hourly.length; i++) {
 
         let card = {
           time: '',
-          temperature: ''
+          temperature: '',
+          feelsLike: '',
+          pressure: '',
+          humidity: ''
         };
 
-        card.time = new Date(data.hourly[i].dt).toLocaleTimeString();
-        card.temperature = ((data.hourly[i].temp - 273.15).toFixed(1));
+        // card.time = new Date(data.hourly[i].dt).toLocaleTimeString();
+        card.time = currentTimeArray[i];
+        card.temperature = (data.hourly[i].temp - 273.15).toFixed(1);
+        card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
+        card.pressure = data.hourly[i].pressure;
+        card.humidity = data.hourly[i].humidity;
         preaparingHourlyCards.push(card);
       }
 
@@ -67,15 +96,13 @@ export class Hourly extends React.Component {
       let preaparingDailyCards = [];
 
       const day = new Date();
-      console.log('day', day.getDay()); //index of days for today
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
       let indexOfToday = day.getDay();
+      indexOfToday = indexOfToday + 1;
       const copy = [...days];
       const part1 = copy.splice(indexOfToday).concat(days);
-      console.log('part 1', part1);
-      const final = [...new Set(part1)];
-      console.log(final);
+      // part1[0] = 'Today';
 
       for (let i = 0; i < data.daily.length; i++) {
 
@@ -84,7 +111,7 @@ export class Hourly extends React.Component {
           temperature: ''
         };
 
-        card.time = final[i];
+        card.time = part1[i];
         card.temperature = ((data.daily[i].temp.day - 273.15).toFixed(1));
         preaparingDailyCards.push(card);
       }
@@ -94,9 +121,10 @@ export class Hourly extends React.Component {
       })
 
       const rainIn = this.state.minutelyCards.findIndex(time => { return time.precipitation === 0 });
-      const rainArray = this.state.minutelyCards.filter(time => { return (time.precipitation === 0) });
-      console.log('find index of rain minute', rainIn);
-      console.log('rain minutes array', rainArray);
+      // const rainArray = this.state.minutelyCards.filter(time => { return time.precipitation === 0 });
+      this.setState({
+        rainIn
+      })
 
       //setting up minute cards
       let preaparingMinuteCards = [];
@@ -122,36 +150,65 @@ export class Hourly extends React.Component {
     }
   };
 
+  toggleHourly = () => {
+    if (this.state.hourly) {
+      this.setState({
+        hourly: false,
+      })
+    } else {
+      this.setState({
+        hourly: true,
+      })
+    }
+  }
+
   render() {
-    console.log('state hourly cards', this.state.hourlyCards);
-    console.log('state daily cards', this.state.dailyCards);
-    console.log('state minutely cards', this.state.minutelyCards);
-
-
+    // console.log('state hourly cards', this.state.hourlyCards);
+    // console.log('state daily cards', this.state.dailyCards);
+    // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
+    // console.log('h/d', this.state.hourly)
 
     return (
       <div>
+        <Link to='/'>
+          <button>Home</button>
+        </Link>
         <div>Your current location:</div>
         {this.state.location &&
           <div className="">
             <div className="bold">{this.state.location}, {this.state.country}</div>
-            <div> <div>hourly:</div>
-              {(this.state.hourlyCards).map((hour, index) =>
-                <div key={index}>{this.state.hourlyCards[index].time}, {this.state.hourlyCards[index].temperature}</div>
-              )}
-            </div>
-            <div><div>daily:</div>
-              {(this.state.dailyCards).map((day, index) =>
-                <div key={index}>{this.state.dailyCards[index].time}, {this.state.dailyCards[index].temperature}</div>
-              )}
-            </div>
-            {/* <div>
-              {this.state.hourlyCards.includes(1) &&
-                <div>Rain in: {this.state.hourlyCards.findIndex(1)}
+            {this.state.hourly ?
+              <button onClick={this.toggleHourly}>Daily</button> :
+              <button onClick={this.toggleHourly}>Hourly</button>
+            }
+            {this.state.hourly ?
+              <div>
+                <div>
+                  <div>hourly:</div>
+                  {(this.state.hourlyCards).map((hour, index) =>
+                    <div key={index}>{this.state.hourlyCards[index].time} {this.state.hourlyCards[index].temperature} C° {this.state.hourlyCards[index].feelsLike} C° {this.state.hourlyCards[index].pressure}hPa {this.state.hourlyCards[index].humidity}%</div>
+                  )}
+                </div>
+              </div>
+              :
+              <div>
+                <div><div>daily:</div>
+                  {(this.state.dailyCards).map((day, index) =>
+                    <div key={index}>{this.state.dailyCards[index].time} {this.state.dailyCards[index].temperature} C°</div>
+                  )}
+                </div>
+              </div>
+            }
+            <div>
+              <br></br>
+              {this.state.rainIn > 0 &&
+                <div>Rain in: {this.state.rainIn} mins
                 </div>
               }
-            </div> */}
+              {!this.state.rainIn <= 0 &&
+                <div>No rain in the next hour</div>}
+            </div>
           </div>
         }
       </div>
