@@ -11,6 +11,9 @@ export class CurrentLocationCard extends React.Component {
       location: '',
       country: '',
       temperature: '',
+      feelsLike: '',
+      tempMax: '',
+      tempMin: '',
       sky: '',
       windSpeed: '',
       windDirection: ''
@@ -34,11 +37,15 @@ export class CurrentLocationCard extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
+      console.log(data);
 
       this.setState({
         location: data.name,
         country: data.sys.country,
         temperature: (data.main.temp - 273.15).toFixed(1),
+        feelsLike: (data.main.feels_like - 273.15).toFixed(1),
+        tempMax: (data.main.temp_max - 273.15).toFixed(1),
+        tempMin: (data.main.temp_min - 273.15).toFixed(1),
         sky: data.weather[0].main,
         windSpeed: data.wind.speed,
         windDirection: data.wind.deg
@@ -60,8 +67,11 @@ export class CurrentLocationCard extends React.Component {
           <div className="">
             <div className="bold">{this.state.location}, {this.state.country}</div>
             <div className="bold">{this.state.temperature} C°</div>
+            <div>feels like {this.state.feelsLike} C°</div>
+            <div>max {this.state.tempMax} C°</div>
+            <div>min {this.state.tempMin} C°</div>
             <div>{this.state.sky}</div>
-            <div>{this.state.windSpeed} m/s {this.state.windDirection}°</div>
+            <div>wind {this.state.windSpeed} m/s {this.state.windDirection}°</div>
           </div>
         }
       </div>
