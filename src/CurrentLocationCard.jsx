@@ -60,7 +60,7 @@ export class CurrentLocationCard extends React.Component {
   render() {
 
     return (
-      <div>
+      <div className='content'>
         <div className='grey'>Your current location</div>
         {this.state.location &&
           <div className='current-location-card'>
@@ -82,5 +82,4 @@ export class CurrentLocationCard extends React.Component {
       </div>
     )
   }
-
 }

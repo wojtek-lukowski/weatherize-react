@@ -182,36 +182,55 @@ export class Hourly extends React.Component {
     return (
       <div className='content'>
         <Link to='/'>
-          <button>Home</button>
+          <button className='button-primary'>Home</button>
         </Link>
-        <div>Your current location</div>
+        <div className='hourly-header'>
+          {/* <div className='grey'>Your current location</div> */}
+          <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
+        </div>
         {this.state.location &&
           <div className='hourly-data'>
-            <div className="bold">{this.state.location}, {this.state.country}</div>
             {this.state.hourly ?
-              <button onClick={this.toggleHourly}>Daily</button> :
-              <button onClick={this.toggleHourly}>Hourly</button>
+              <div>
+                <button className="button-toggle-selected" onClick={this.toggleHourly}>Hourly</button>
+                <button className="button-toggle" onClick={this.toggleHourly}>Daily</button>
+              </div>
+              :
+              <div>
+                <button className="button-toggle" onClick={this.toggleHourly}>Hourly</button>
+                <button className="button-toggle-selected" onClick={this.toggleHourly}>Daily</button>
+              </div>
             }
             {this.state.hourly ?
               <div>
                 {/* <div>hourly:</div> */}
                 <div className='hourly-cards-container'>
-                  <ul className="hourly-card fixed">
+                  <ul className="hourly-card">
                     <li>Time</li>
                     <li>Temp</li>
                     <li>Feels like</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
                   </ul>
-                  {(this.state.hourlyCards).map((hour, index) =>
-                    <ul className="hourly-card" key={index}>
-                      <li>{this.state.hourlyCards[index].time}:00</li>
-                      <li>{this.state.hourlyCards[index].temperature} C°</li>
-                      <li>{this.state.hourlyCards[index].feelsLike} C°</li>
-                      <li>{this.state.hourlyCards[index].pressure}hPa</li>
-                      <li>{this.state.hourlyCards[index].humidity}%</li>
-                    </ul>
-                  )}
+                  <div className='hourly-cards-moving'>
+                    {(this.state.hourlyCards).map((hour, index) =>
+                      <ul className="hourly-card" key={index}>
+                        <li>{this.state.hourlyCards[index].time}:00</li>
+                        <li>{this.state.hourlyCards[index].temperature} C°</li>
+                        <li>{this.state.hourlyCards[index].feelsLike} C°</li>
+                        <li>{this.state.hourlyCards[index].pressure}hPa</li>
+                        <li>{this.state.hourlyCards[index].humidity}%</li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                <div className='rain-info'>
+                  {this.state.rainIn > 0 &&
+                    <div>Rain in: {this.state.rainIn} mins
+                    </div>
+                  }
+                  {!this.state.rainIn &&
+                    <div>No rain in the next hour</div>}
                 </div>
               </div>
               :
@@ -227,15 +246,6 @@ export class Hourly extends React.Component {
                 </div>
               </div>
             }
-            <div>
-              <br></br>
-              {this.state.rainIn > 0 &&
-                <div>Rain in: {this.state.rainIn} mins
-                </div>
-              }
-              {!this.state.rainIn <= 0 &&
-                <div>No rain in the next hour</div>}
-            </div>
           </div>
         }
       </div>

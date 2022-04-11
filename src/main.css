@@ -4,6 +4,7 @@
 
 html {
   font-size: 62.5%;
+  background-color: var(--background-color);
 }
 
 body {
@@ -18,7 +19,52 @@ body {
 .App h1 {
   text-align: left;
   margin-left: calc(var(--column2) + var(--page-padding));
+  margin-left: calc(var(--page-padding));
+  margin-bottom: 10rem;
+}
 
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: var(--column12);
+  margin: var(--gap2) auto;
+}
+
+.content {
+  max-width: var(--column12);
+  margin: auto;
+}
+
+.button-primary {
+  width: 15rem;
+  background-color: var(--black);
+  color: var(--white);
+  border: 1px solid var(--text-color);
+  text-decoration: none;
+  padding: var(--gap1-5);
+}
+
+.button-primary:hover {
+  border: 1px solid var(--primary-color);
+}
+
+.button-toggle {
+  width: 12rem;
+  background-color: var(--black);
+  margin: var(--gap5) 0;
+  border: none;
+  padding: var(--gap1-5);
+  color: var(--text-color);
+}
+
+.button-toggle-selected {
+  width: 12rem;
+  background-color: var(--black);
+  margin: var(--gap5) 0;
+  padding: var(--gap1-5);
+  border: none;
+  border-bottom: 3px solid var(--primary-color);
+  color: var(--white);
 }
 
 ul {
@@ -86,7 +132,8 @@ h2.location span {
 .grey {
   color: var(--text-color);
   text-align: left;
-  margin-left: calc(var(--column2) + var(--page-padding));
+  margin-left: calc(var(--column) + var(--gutter));
+  /* margin-left: calc(var(--column2) + var(--page-padding)); */
   margin-bottom: 0;
 }
 
@@ -100,7 +147,16 @@ h2.location span {
   flex-direction: row;
   gap: var(--gap);
   overflow-x: scroll;
-  margin-left: calc(var(--page-padding) + 10.8rem);
+  /* margin-left: calc(var(--page-padding) + 10.8rem); */
+  /* margin-left: calc(var(--page-padding) + var(--column3)); */
+}
+
+.hourly-cards-moving {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  overflow-x: scroll;
+  /* margin-left: calc(var(--page-padding) + 10.8rem); */
   /* margin-left: calc(var(--page-padding) + var(--column3)); */
 }
 
@@ -127,7 +183,7 @@ h2.location span {
 
 .fixed {
   position: absolute;
-  left: calc(var(--page-padding));
+  left: var(--page-padding);
   left: 0;
   margin-left: calc(var(--page-padding) + 10.8rem);
   max-width: 10.8rem;
@@ -137,17 +193,31 @@ h2.location span {
   display: block !important;
 }
 
-.content {
-  max-width: var(--column12);
-  margin: auto;
+.rain-info {
+  margin-top: var(--gap5);
+}
+
+.daily-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+  overflow-x: scroll;
 }
 
 .daily {
   display: flex;
-  /* flex-direction: row; */
-  flex-wrap: nowrap;
+  justify-content: center;
+
+  min-width: 13rem;
+  height: 15rem;
+
+  border-radius: var(--border-radius);
+  background-color: var(--card-background);
+  color: var(--white);
+  padding: var(--gap2);
+  border-top: 3px solid var(--primary-color);
 }
 
 .daily li {
-  display: inline-block;
+  display: block;
 }

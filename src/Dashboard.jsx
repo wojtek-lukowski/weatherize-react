@@ -15,7 +15,7 @@ function Dashboard() {
     // <div>
     //   <CurrentLocationCard />
     // </div>
-    <div className="App">
+    <div className="App content">
       <Link to='/hourly' className="card">
         <CurrentLocationCard />
       </Link>
@@ -24,9 +24,9 @@ function Dashboard() {
         <Favorites />
       }
       <nav>
-        <Link to='/login'>Login</Link>
+        <Link to='/login'><button className='button-primary'>Login</button></Link>
         <br></br>
-        <Link to='/register'>Create Account</Link>
+        <Link to='/register'><button className='button-primary'>Create Account</button></Link>
       </nav>
     </div>
   );
