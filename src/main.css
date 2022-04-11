@@ -171,7 +171,7 @@ h2.location span {
 
 .hourly-card {
   width: var(--column3);
-  width: 12rem !important;
+  min-width: 14rem !important;
   margin: var(--gap) auto;
   border-radius: var(--border-radius);
   background-color: var(--card-background);
@@ -194,22 +194,30 @@ h2.location span {
 }
 
 .rain-info {
+  margin: var(--gap5) 0;
+}
+
+.green {
+  color: var(--primary-color);
+}
+
+.margin-top {
   margin-top: var(--gap5);
 }
 
-.daily-container {
+.daily-card-container {
   display: flex;
   flex-direction: row;
   gap: var(--gap);
   overflow-x: scroll;
 }
 
-.daily {
+.daily-card {
   display: flex;
-  justify-content: center;
+  justify-content: left;
 
   min-width: 13rem;
-  height: 15rem;
+  /* height: 15rem; */
 
   border-radius: var(--border-radius);
   background-color: var(--card-background);
@@ -220,4 +228,10 @@ h2.location span {
 
 .daily li {
   display: block;
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: right;
+  margin-bottom: var(--gap3);
 }

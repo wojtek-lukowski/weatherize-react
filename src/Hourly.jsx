@@ -74,6 +74,9 @@ export class Hourly extends React.Component {
         let card = {
           time: '',
           temperature: '',
+          sky: '',
+          windSpeed: '',
+          windDirection: '',
           feelsLike: '',
           pressure: '',
           humidity: ''
@@ -83,6 +86,9 @@ export class Hourly extends React.Component {
         card.time = currentTimeArray[i];
         card.temperature = (data.hourly[i].temp - 273.15).toFixed(1);
         card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
+        card.sky = data.hourly[i].weather[0].main;
+        card.windSpeed = data.hourly[i].wind_speed;
+        card.windDirection = data.hourly[i].wind_deg;
         card.pressure = data.hourly[i].pressure;
         card.humidity = data.hourly[i].humidity;
         preaparingHourlyCards.push(card);
@@ -105,7 +111,7 @@ export class Hourly extends React.Component {
       let preaparingDailyCards = [];
 
       const day = new Date();
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
       let indexOfToday = day.getDay();
       indexOfToday = indexOfToday + 1;
@@ -117,11 +123,23 @@ export class Hourly extends React.Component {
 
         let card = {
           time: '',
-          temperature: ''
+          temperature: '',
+          sky: '',
+          windSpeed: '',
+          windDirection: '',
+          feelsLike: '',
+          pressure: '',
+          humidity: ''
         };
 
         card.time = part1[i];
         card.temperature = ((data.daily[i].temp.day - 273.15).toFixed(1));
+        card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
+        card.sky = data.daily[i].weather[0].main;
+        card.windSpeed = data.daily[i].wind_speed;
+        card.windDirection = data.daily[i].wind_deg;
+        card.pressure = data.daily[i].pressure;
+        card.humidity = data.daily[i].humidity;
         preaparingDailyCards.push(card);
       }
 
@@ -177,13 +195,15 @@ export class Hourly extends React.Component {
     // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
     // console.log('h/d', this.state.hourly)
-    console.log('rainIn', this.state.rainIn);
+    // console.log('rainIn', this.state.rainIn);
 
     return (
       <div className='content'>
-        <Link to='/'>
-          <button className='button-primary'>Home</button>
-        </Link>
+        <div className='back-button-container'>
+          <Link to='/'>
+            <button className='button-primary'>Home</button>
+          </Link>
+        </div>
         <div className='hourly-header'>
           {/* <div className='grey'>Your current location</div> */}
           <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
@@ -203,11 +223,13 @@ export class Hourly extends React.Component {
             }
             {this.state.hourly ?
               <div>
-                {/* <div>hourly:</div> */}
                 <div className='hourly-cards-container'>
                   <ul className="hourly-card">
                     <li>Time</li>
                     <li>Temp</li>
+                    <li>Sky</li>
+                    <li>Wind (m/s)</li>
+                    <li>Wind (dir)</li>
                     <li>Feels like</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
@@ -217,8 +239,11 @@ export class Hourly extends React.Component {
                       <ul className="hourly-card" key={index}>
                         <li>{this.state.hourlyCards[index].time}:00</li>
                         <li>{this.state.hourlyCards[index].temperature} C°</li>
+                        <li>{this.state.hourlyCards[index].sky}</li>
+                        <li>{this.state.hourlyCards[index].windSpeed}</li>
+                        <li>{this.state.hourlyCards[index].windDirection}°</li>
                         <li>{this.state.hourlyCards[index].feelsLike} C°</li>
-                        <li>{this.state.hourlyCards[index].pressure}hPa</li>
+                        <li>{this.state.hourlyCards[index].pressure} hPa</li>
                         <li>{this.state.hourlyCards[index].humidity}%</li>
                       </ul>
                     )}
@@ -226,7 +251,7 @@ export class Hourly extends React.Component {
                 </div>
                 <div className='rain-info'>
                   {this.state.rainIn > 0 &&
-                    <div>Rain in: {this.state.rainIn} mins
+                    <div className='green'>Rain in {this.state.rainIn} mins
                     </div>
                   }
                   {!this.state.rainIn &&
@@ -235,19 +260,39 @@ export class Hourly extends React.Component {
               </div>
               :
               <div>
-                <div className='daily-container'>
-                  {/* <div>daily</div> */}
-                  {(this.state.dailyCards).map((day, index) =>
-                    <ul className='daily' key={index}>
-                      <li>{this.state.dailyCards[index].time}</li>
-                      <li>{this.state.dailyCards[index].temperature} C°</li>
-                    </ul>
-                  )}
+                <div className='hourly-cards-container'>
+                  <ul className="hourly-card">
+                    <li>Day</li>
+                    <li>Temp</li>
+                    <li>Sky</li>
+                    <li>Wind (m/s)</li>
+                    <li>Wind (dir)</li>
+                    <li>Feels like</li>
+                    <li>Pressure</li>
+                    <li>Humidity</li>
+                  </ul>
+                  <div className='hourly-cards-moving'>
+                    {(this.state.dailyCards).map((day, index) =>
+                      <ul className='hourly-card' key={index}>
+                        <li>{this.state.dailyCards[index].time}</li>
+                        <li>{this.state.dailyCards[index].temperature} C°</li>
+                        <li>{this.state.hourlyCards[index].sky}</li>
+                        <li>{this.state.dailyCards[index].windSpeed}</li>
+                        <li>{this.state.dailyCards[index].windDirection}°</li>
+                        <li>{this.state.dailyCards[index].feelsLike} C°</li>
+                        <li>{this.state.dailyCards[index].pressure} hPa</li>
+                        <li>{this.state.dailyCards[index].humidity}%</li>
+                      </ul>
+                    )}
+                  </div>
                 </div>
               </div>
             }
           </div>
         }
+        {/* <Link to='/'>
+          <button className='button-primary margin-top'>Home</button>
+        </Link> */}
       </div>
     )
   }
