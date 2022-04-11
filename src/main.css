@@ -101,6 +101,7 @@ h2.location span {
   gap: var(--gap);
   overflow-x: scroll;
   margin-left: calc(var(--page-padding) + var(--column3));
+  margin-left: calc(var(--page-padding) + 10.8rem);
 }
 
 .hourly-cards-container ul li {
@@ -114,6 +115,7 @@ h2.location span {
 
 .hourly-card {
   width: var(--column3);
+  width: 12rem !important;
   margin: var(--gap) auto;
   border-radius: var(--border-radius);
   background-color: var(--card-background);
@@ -126,6 +128,7 @@ h2.location span {
 .fixed {
   position: absolute;
   left: var(--page-padding);
+  max-width: 10.8rem;
 }
 
 .fixed li {
