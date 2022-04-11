@@ -177,13 +177,14 @@ export class Hourly extends React.Component {
     // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
     // console.log('h/d', this.state.hourly)
+    console.log('rainIn', this.state.rainIn);
 
     return (
       <div className='content'>
         <Link to='/'>
           <button>Home</button>
         </Link>
-        <div className='grey'>Your current location</div>
+        <div>Your current location</div>
         {this.state.location &&
           <div className='hourly-data'>
             <div className="bold">{this.state.location}, {this.state.country}</div>

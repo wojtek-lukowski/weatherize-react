@@ -101,7 +101,7 @@ h2.location span {
   gap: var(--gap);
   overflow-x: scroll;
   margin-left: calc(var(--page-padding) + 10.8rem);
-  margin-left: calc(var(--page-padding) + var(--column3));
+  /* margin-left: calc(var(--page-padding) + var(--column3)); */
 }
 
 
@@ -129,6 +129,7 @@ h2.location span {
 .fixed {
   position: absolute;
   left: calc(var(--page-padding));
+  left: 0;
   margin-left: calc(var(--page-padding) + 10.8rem);
   max-width: 10.8rem;
 }
