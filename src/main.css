@@ -100,9 +100,10 @@ h2.location span {
   flex-direction: row;
   gap: var(--gap);
   overflow-x: scroll;
-  margin-left: calc(var(--page-padding) + var(--column3));
   margin-left: calc(var(--page-padding) + 10.8rem);
+  margin-left: calc(var(--page-padding) + var(--column3));
 }
+
 
 .hourly-cards-container ul li {
   width: 100%;
@@ -127,10 +128,16 @@ h2.location span {
 
 .fixed {
   position: absolute;
-  left: var(--page-padding);
+  left: calc(var(--page-padding));
+  margin-left: calc(var(--page-padding) + 10.8rem);
   max-width: 10.8rem;
 }
 
 .fixed li {
   display: block !important;
+}
+
+.content {
+  max-width: var(--column12);
+  margin: auto;
 }

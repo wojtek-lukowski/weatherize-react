@@ -179,13 +179,13 @@ export class Hourly extends React.Component {
     // console.log('h/d', this.state.hourly)
 
     return (
-      <div>
+      <div className='content'>
         <Link to='/'>
           <button>Home</button>
         </Link>
-        <div>Your current location:</div>
+        <div className='grey'>Your current location</div>
         {this.state.location &&
-          <div>
+          <div className='hourly-data'>
             <div className="bold">{this.state.location}, {this.state.country}</div>
             {this.state.hourly ?
               <button onClick={this.toggleHourly}>Daily</button> :
