@@ -216,10 +216,13 @@ export class Hourly extends React.Component {
               </div>
               :
               <div>
-                <div><div>daily:</div>
+                <div className='daily-container'>
+                  {/* <div>daily</div> */}
                   {(this.state.dailyCards).map((day, index) =>
-                    <div key={index}>{this.state.dailyCards[index].time}
-                      {this.state.dailyCards[index].temperature} C°</div>
+                    <ul className='daily' key={index}>
+                      <li>{this.state.dailyCards[index].time}</li>
+                      <li>{this.state.dailyCards[index].temperature} C°</li>
+                    </ul>
                   )}
                 </div>
               </div>

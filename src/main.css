@@ -104,7 +104,6 @@ h2.location span {
   /* margin-left: calc(var(--page-padding) + var(--column3)); */
 }
 
-
 .hourly-cards-container ul li {
   width: 100%;
 }
@@ -141,4 +140,14 @@ h2.location span {
 .content {
   max-width: var(--column12);
   margin: auto;
+}
+
+.daily {
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: nowrap;
+}
+
+.daily li {
+  display: inline-block;
 }
