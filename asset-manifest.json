@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/weatherize-react/static/css/main.86779ac3.css",
-    "main.js": "/weatherize-react/static/js/main.ed37d9e1.js",
+    "main.css": "/weatherize-react/static/css/main.074b1e9b.css",
+    "main.js": "/weatherize-react/static/js/main.d3f39eb6.js",
     "static/js/787.b763072a.chunk.js": "/weatherize-react/static/js/787.b763072a.chunk.js",
     "index.html": "/weatherize-react/index.html",
-    "main.86779ac3.css.map": "/weatherize-react/static/css/main.86779ac3.css.map",
-    "main.ed37d9e1.js.map": "/weatherize-react/static/js/main.ed37d9e1.js.map",
+    "main.074b1e9b.css.map": "/weatherize-react/static/css/main.074b1e9b.css.map",
+    "main.d3f39eb6.js.map": "/weatherize-react/static/js/main.d3f39eb6.js.map",
     "787.b763072a.chunk.js.map": "/weatherize-react/static/js/787.b763072a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.86779ac3.css",
-    "static/js/main.ed37d9e1.js"
+    "static/css/main.074b1e9b.css",
+    "static/js/main.d3f39eb6.js"
   ]
 }
