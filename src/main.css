@@ -389,3 +389,24 @@ h2.location span {
     transform: scale(100%);
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .current-location-card {
+    width: var(--column12);
+    margin: inherit auto;
+  }
+
+  h1 {
+    text-align: center !important;
+    margin: inherit auto;
+  }
+
+  h2.location {
+    text-align: center !important;
+    margin: inherit auto;
+  }
+
+  .back-button-container {
+    justify-content: center;
+  }
+}

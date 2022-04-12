@@ -4,6 +4,7 @@ import Dashboard from './Dashboard';
 import Login from './Login';
 import Registration from './Registration';
 import { Hourly } from './Hourly';
+import { FavsHourly } from './FavsHourly';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route exact path='/hourly' element={ <Hourly /> }></Route>
       <Route exact path='/login' element={ <Login /> }></Route>
       <Route exact path='/register' element={ <Registration /> }></Route>
+      {/* <Route exact path='/favorites/:city' element={ <FavsHourly /> }></Route> */}
         </Routes>
       </Router>
     </div>

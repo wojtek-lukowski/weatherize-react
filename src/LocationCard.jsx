@@ -1,5 +1,6 @@
 import React from 'react';
 import { config } from './config';
+import { Link } from 'react-router-dom';
 const key = config.API_KEY;
 
 export class LocationCard extends React.Component {
@@ -50,7 +51,8 @@ export class LocationCard extends React.Component {
     return (
       // <div>{this.props.city}</div>
       <div className='favs'>
-        {this.state.location &&
+        {
+          this.state.location &&
           <div className='current-location-card'>
             <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
             {/* <div className='main-data'>
@@ -67,7 +69,7 @@ export class LocationCard extends React.Component {
             </ul>
           </div>
         }
-      </div>
+      </div >
     )
   }
 
