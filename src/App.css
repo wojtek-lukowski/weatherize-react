@@ -28,16 +28,6 @@
   color: #61dafb;
 }
 
-.bold {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.card {
-  text-decoration: none;
-  color: black;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

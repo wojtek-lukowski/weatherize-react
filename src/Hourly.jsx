@@ -134,7 +134,7 @@ export class Hourly extends React.Component {
 
         card.time = part1[i];
         card.temperature = ((data.daily[i].temp.day - 273.15).toFixed(1));
-        card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
+        card.feelsLike = (data.daily[i].feels_like.day - 273.15).toFixed(1);
         card.sky = data.daily[i].weather[0].main;
         card.windSpeed = data.daily[i].wind_speed;
         card.windDirection = data.daily[i].wind_deg;
@@ -276,7 +276,7 @@ export class Hourly extends React.Component {
                       <ul className='hourly-card' key={index}>
                         <li>{this.state.dailyCards[index].time}</li>
                         <li>{this.state.dailyCards[index].temperature} C°</li>
-                        <li>{this.state.hourlyCards[index].sky}</li>
+                        <li>{this.state.dailyCards[index].sky}</li>
                         <li>{this.state.dailyCards[index].windSpeed}</li>
                         <li>{this.state.dailyCards[index].windDirection}°</li>
                         <li>{this.state.dailyCards[index].feelsLike} C°</li>

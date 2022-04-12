@@ -8,7 +8,7 @@ html {
 }
 
 body {
-  font-family: Montserrat;
+  /* font-family: Montserrat, Manrope; */
   font-size: 1.6rem;
   color: var(--white);
   background-image: var(--background-gradient);
@@ -16,11 +16,15 @@ body {
   padding: var(--gutter);
 }
 
+a {
+  text-decoration: none;
+}
+
 .App h1 {
   text-align: left;
   margin-left: calc(var(--column2) + var(--page-padding));
   margin-left: calc(var(--page-padding));
-  margin-bottom: 10rem;
+  margin-bottom: 5rem;
 }
 
 nav {
@@ -39,12 +43,15 @@ nav {
   width: 15rem;
   background-color: var(--black);
   color: var(--white);
+  border-radius: var(--border-radius);
   border: 1px solid var(--text-color);
   text-decoration: none;
   padding: var(--gap1-5);
 }
 
 .button-primary:hover {
+  cursor: pointer;
+  border-radius: var(--border-radius);
   border: 1px solid var(--primary-color);
 }
 
@@ -65,6 +72,11 @@ nav {
   border: none;
   border-bottom: 3px solid var(--primary-color);
   color: var(--white);
+}
+
+.button-toggle,
+.button-toggle-selected:hover {
+  cursor: pointer;
 }
 
 ul {
@@ -234,4 +246,146 @@ h2.location span {
   display: flex;
   justify-content: right;
   margin-bottom: var(--gap3);
+}
+
+.loading-dot {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin: .3rem;
+  border-radius: 50px;
+  background-color: var(--primary-color);
+}
+
+#dot-1 {
+  animation: loading-dots-1;
+  animation-duration: .7s;
+  animation-direction: normal;
+  animation-iteration-count: infinite;
+}
+
+#dot-2 {
+  animation: loading-dots-2;
+  animation-duration: .7s;
+  animation-direction: normal;
+  animation-iteration-count: infinite;
+}
+
+#dot-3 {
+  animation: loading-dots-3;
+  animation-duration: .7s;
+  animation-direction: normal;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading-dots-1 {
+  0% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  16.5% {
+    background-color: var(--primary-color);
+    transform: scale(120%);
+  }
+
+  33% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  49.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  66% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  82.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  100% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+}
+
+
+@keyframes loading-dots-2 {
+  0% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  16.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  33% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  49.5% {
+    background-color: var(--primary-color);
+    transform: scale(120%);
+  }
+
+  66% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  82.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  100% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+}
+
+@keyframes loading-dots-3 {
+  0% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  16.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  33% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  49.5% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  66% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
+
+  82.5% {
+    background-color: var(--primary-color);
+    transform: scale(120%);
+  }
+
+  100% {
+    background-color: var(--text-color);
+    transform: scale(100%);
+  }
 }

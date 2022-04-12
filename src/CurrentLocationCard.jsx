@@ -1,6 +1,6 @@
 import React from 'react';
 import { config } from './config';
-// import Loading from './Loading'
+import Loading from './Loading'
 const key = config.API_KEY;
 export class CurrentLocationCard extends React.Component {
 
@@ -16,12 +16,14 @@ export class CurrentLocationCard extends React.Component {
       tempMin: '',
       sky: '',
       windSpeed: '',
-      windDirection: ''
+      windDirection: '',
+      loading: true
     }
   }
 
   async componentDidMount() {
     localStorage.clear();
+    console.log(this.state.loading);
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.getWeather(position.coords.latitude, position.coords.longitude);
@@ -55,13 +57,21 @@ export class CurrentLocationCard extends React.Component {
     } catch (err) {
       console.log(err);
     }
+    this.setState({
+      loading: false
+    })
   };
 
   render() {
+    console.log(this.state.loading);
 
     return (
       <div className='content'>
-        <div className='grey'>Your current location</div>
+        {this.state.loading ?
+          // <div className='grey'>Loading your current location</div> :
+          <Loading /> :
+          <div className='grey'>Your current location</div>
+        }
         {this.state.location &&
           <div className='current-location-card'>
             <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>

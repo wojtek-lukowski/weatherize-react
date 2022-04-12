@@ -24,9 +24,14 @@ function Dashboard() {
         <Favorites />
       }
       <nav>
-        <Link to='/login'><button className='button-primary'>Login</button></Link>
-        <br></br>
-        <Link to='/register'><button className='button-primary'>Create Account</button></Link>
+        {/* <Link to='/login'> */}
+        <button className='button-primary'>Login</button>
+        {/* </Link> */}
+
+        {/* <Link to='/register'> */}
+        <button className='button-primary'>Create Account
+        </button>
+        {/* </Link> */}
       </nav>
     </div>
   );
