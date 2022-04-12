@@ -410,3 +410,9 @@ h2.location span {
     justify-content: center;
   }
 }
+
+.favs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
