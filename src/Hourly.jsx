@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { config } from './config';
+import { Chart } from 'react-google-charts';
 const key = config.API_KEY;
+
 
 export class Hourly extends React.Component {
 
@@ -15,7 +17,34 @@ export class Hourly extends React.Component {
       dailyCards: [],
       minutelyCards: [],
       rainIn: null,
-      hourly: true
+      hourly: true,
+      tempChartHourly: [],
+      tempChartHourlyOptions:
+      {
+        title: "Hourly temperature",
+        curveType: "function",
+        legend: { position: "bottom" }
+      },
+      windChartHourly: [],
+      windChartHourlyOptions:
+      {
+        title: "Wind & wind gusts",
+        curveType: "function",
+        legend: { position: "bottom" }
+      },
+      tempChartDaily: [],
+      tempChartDailyOptions:
+      {
+        chart: {
+          title: "Daily temperature",
+          subtitle: "Dfferences during the day"
+        }
+      },
+      skyChartDaily: [],
+      skyChartDailyOptions:
+      {
+        title: "Sky in the next 8 days",
+      },
     }
   }
 
@@ -39,7 +68,7 @@ export class Hourly extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      console.clear();
+      // console.clear();
       console.log(data);
       // console.log('data.daily', data.daily);
       // console.log('data.hourly', data.hourly);
@@ -80,7 +109,7 @@ export class Hourly extends React.Component {
           windGusts: '',
           feelsLike: '',
           pressure: '',
-          humidity: ''
+          humidity: '',
         };
 
         // card.time = new Date(data.hourly[i].dt).toLocaleTimeString();
@@ -118,17 +147,33 @@ export class Hourly extends React.Component {
         preaparingHourlyCards.push(card);
       }
 
-      // let card = {
-      //   time: 'Time',
-      //   temperature: 'Temp',
-      //   feelsLike: 'Feels Like',
-      //   pressure: 'Pressure',
-      //   humidity: 'Humidity'
-      // };
-      // preaparingHourlyCards.unshift(card);
-
       this.setState({
         hourlyCards: preaparingHourlyCards
+      })
+
+      //setting up data for hourly charts
+      const tempChartHourly = [['Time', 'Temperature', 'Feels like']];
+      for (let i = 0; i < this.state.hourlyCards.length; i++) {
+        tempChartHourly.push([
+          this.state.hourlyCards[i].time.toString(),
+          parseInt(this.state.hourlyCards[i].temperature),
+          parseInt(this.state.hourlyCards[i].feelsLike)
+        ])
+      }
+      this.setState({
+        tempChartHourly
+      })
+
+      const windChartHourly = [['Time', 'Wind Speed', 'Wind Gusts']];
+      for (let i = 0; i < this.state.hourlyCards.length; i++) {
+        windChartHourly.push([
+          this.state.hourlyCards[i].time.toString(),
+          parseInt(this.state.hourlyCards[i].windSpeed),
+          parseInt(this.state.hourlyCards[i].windGusts)
+        ])
+      }
+      this.setState({
+        windChartHourly
       })
 
       //setting up daily cards
@@ -211,6 +256,50 @@ export class Hourly extends React.Component {
         rainIn
       })
 
+      //setting up data for daily charts
+      const tempChartDaily = [['Day', 'Morning', 'Midday', 'Evening', 'Night']];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        tempChartDaily.push([
+          this.state.dailyCards[i].time,
+          parseInt(this.state.dailyCards[i].temperatureMorning),
+          parseInt(this.state.dailyCards[i].temperature),
+          parseInt(this.state.dailyCards[i].temperatureEvening),
+          parseInt(this.state.dailyCards[i].temperatureNight),
+        ])
+      }
+      this.setState({
+        tempChartDaily
+      })
+
+      const skyChartDaily = [['Day', 'Morning', 'Midday', 'Evening', 'Night']];
+
+      const skyTypes = [];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        skyTypes.push(this.state.dailyCards[i].sky)
+        console.log(skyTypes);
+      }
+
+      const skyTypecounts = {};
+      skyTypes.forEach((x) => {
+        skyTypecounts[x] = (skyTypecounts[x] || 0) + 1;
+      });
+
+      console.log(skyTypecounts);
+
+
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        skyChartDaily.push(
+          skyTypecounts[i]
+        )
+      }
+      this.setState({
+        skyChartDaily
+      })
+
+      console.log(this.state.skyChartDaily);
+
+
+
       //setting up minute cards
       let preaparingMinuteCards = [];
 
@@ -248,7 +337,7 @@ export class Hourly extends React.Component {
   }
 
   render() {
-    // console.log('state hourly cards', this.state.hourlyCards);
+    console.log('state hourly cards', this.state.hourlyCards);
     // console.log('state daily cards', this.state.dailyCards);
     // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
@@ -316,6 +405,20 @@ export class Hourly extends React.Component {
                     <div>No rain in the next hour</div>
                   }
                 </div>
+                <div className='charts'>
+                  <Chart
+                    chartType="LineChart"
+                    width="100%"
+                    data={this.state.tempChartHourly}
+                    options={this.state.tempChartHourlyOptions}
+                  />
+                  <Chart
+                    chartType="LineChart"
+                    width="100%"
+                    data={this.state.windChartHourly}
+                    options={this.state.windChartHourlyOptions}
+                  />
+                </div>
               </div>
               :
               <div>
@@ -358,6 +461,20 @@ export class Hourly extends React.Component {
                       </ul>
                     )}
                   </div>
+                </div>
+                <div className='charts'>
+                  <Chart
+                    chartType="Bar"
+                    width="100%"
+                    data={this.state.tempChartDaily}
+                    options={this.state.tempChartDailyOptions}
+                  />
+                  <Chart
+                    chartType="PieChart"
+                    width="100%"
+                    data={this.state.skyChartDaily}
+                    options={this.state.skyChartDailyOptions}
+                  />
                 </div>
               </div>
             }
