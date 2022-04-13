@@ -77,6 +77,7 @@ export class Hourly extends React.Component {
           sky: '',
           windSpeed: '',
           windDirection: '',
+          windGusts: '',
           feelsLike: '',
           pressure: '',
           humidity: ''
@@ -87,7 +88,8 @@ export class Hourly extends React.Component {
         card.temperature = (data.hourly[i].temp - 273.15).toFixed(1);
         card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
         card.sky = data.hourly[i].weather[0].main;
-        card.windSpeed = data.hourly[i].wind_speed;
+        card.windSpeed = data.hourly[i].wind_speed.toFixed(1);
+        card.windGusts = data.hourly[i].wind_gust.toFixed(1);
         // card.windDirection = data.hourly[i].wind_deg;
 
         let windD = data.hourly[i].wind_deg;
@@ -146,19 +148,33 @@ export class Hourly extends React.Component {
         let card = {
           time: '',
           temperature: '',
+          temperatureMorning: '',
+          temperatureEvening: '',
+          temperatureNight: '',
+          feelsLikeMorning: '',
+          feelsLikeEveneing: '',
+          feelsLikeNight: '',
           sky: '',
           windSpeed: '',
           windDirection: '',
+          windGusts: '',
           feelsLike: '',
           pressure: '',
           humidity: ''
         };
 
         card.time = part1[i];
-        card.temperature = ((data.daily[i].temp.day - 273.15).toFixed(1));
+        card.temperature = (data.daily[i].temp.day - 273.15).toFixed(1);
         card.feelsLike = (data.daily[i].feels_like.day - 273.15).toFixed(1);
+        card.feelsLikeMorning = (data.daily[i].feels_like.morn - 273.15).toFixed(1);
+        card.feelsLikeEvening = (data.daily[i].feels_like.eve - 273.15).toFixed(1);
+        card.feelsLikeNight = (data.daily[i].feels_like.night - 273.15).toFixed(1);
+        card.temperatureMorning = (data.daily[i].temp.morn - 273.15).toFixed(1);
+        card.temperatureEvening = (data.daily[i].temp.eve - 273.15).toFixed(1);
+        card.temperatureNight = (data.daily[i].temp.night - 273.15).toFixed(1);
         card.sky = data.daily[i].weather[0].main;
-        card.windSpeed = data.daily[i].wind_speed;
+        card.windSpeed = data.daily[i].wind_speed.toFixed(1);
+        card.windGusts = data.daily[i].wind_gust.toFixed(1);
         // card.windDirection = data.daily[i].wind_deg;
         let windD = data.hourly[i].wind_deg;
 
@@ -269,10 +285,11 @@ export class Hourly extends React.Component {
                   <ul className="hourly-card">
                     <li>Time</li>
                     <li>Temp</li>
+                    <li>Feels like</li>
                     <li>Sky</li>
                     <li>Wind (m/s)</li>
                     <li>Wind (dir)</li>
-                    <li>Feels like</li>
+                    <li>Wind gusts</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
                   </ul>
@@ -281,10 +298,11 @@ export class Hourly extends React.Component {
                       <ul className="hourly-card" key={index}>
                         <li>{this.state.hourlyCards[index].time}:00</li>
                         <li>{this.state.hourlyCards[index].temperature} C°</li>
+                        <li>{this.state.hourlyCards[index].feelsLike} C°</li>
                         <li>{this.state.hourlyCards[index].sky}</li>
                         <li>{this.state.hourlyCards[index].windSpeed}</li>
                         <li>{this.state.hourlyCards[index].windDirection}</li>
-                        <li>{this.state.hourlyCards[index].feelsLike} C°</li>
+                        <li>{this.state.hourlyCards[index].windGusts}</li>
                         <li>{this.state.hourlyCards[index].pressure} hPa</li>
                         <li>{this.state.hourlyCards[index].humidity}%</li>
                       </ul>
@@ -305,24 +323,38 @@ export class Hourly extends React.Component {
                   <ul className="hourly-card">
                     <li>Day</li>
                     <li>Temp</li>
+                    <li>Feels like</li>
                     <li>Sky</li>
                     <li>Wind (m/s)</li>
                     <li>Wind (dir)</li>
-                    <li>Feels like</li>
+                    <li>Wind gusts</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
+                    <li>Morning</li>
+                    <li>Feels like</li>
+                    <li>Evening</li>
+                    <li>Feels like</li>
+                    <li>Night</li>
+                    <li>Feels like</li>
                   </ul>
                   <div className='hourly-cards-moving'>
                     {(this.state.dailyCards).map((day, index) =>
                       <ul className='hourly-card' key={index}>
                         <li>{this.state.dailyCards[index].time}</li>
                         <li>{this.state.dailyCards[index].temperature} C°</li>
+                        <li>{this.state.dailyCards[index].feelsLike} C°</li>
                         <li>{this.state.dailyCards[index].sky}</li>
                         <li>{this.state.dailyCards[index].windSpeed}</li>
                         <li>{this.state.dailyCards[index].windDirection}</li>
-                        <li>{this.state.dailyCards[index].feelsLike} C°</li>
+                        <li>{this.state.dailyCards[index].windGusts}</li>
                         <li>{this.state.dailyCards[index].pressure} hPa</li>
                         <li>{this.state.dailyCards[index].humidity}%</li>
+                        <li>{this.state.dailyCards[index].temperatureMorning} C°</li>
+                        <li>{this.state.dailyCards[index].feelsLikeMorning} C°</li>
+                        <li>{this.state.dailyCards[index].temperatureEvening} C°</li>
+                        <li>{this.state.dailyCards[index].feelsLikeEvening} C°</li>
+                        <li>{this.state.dailyCards[index].temperatureNight} C°</li>
+                        <li>{this.state.dailyCards[index].feelsLikeNight} C°</li>
                       </ul>
                     )}
                   </div>

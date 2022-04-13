@@ -38,7 +38,7 @@ export class LocationCard extends React.Component {
         tempMax: (data.main.temp_max - 273.15).toFixed(1),
         tempMin: (data.main.temp_min - 273.15).toFixed(1),
         sky: data.weather[0].main,
-        windSpeed: data.wind.speed,
+        windSpeed: data.wind.speed.toFixed(1),
         // windDirection: data.wind.deg
       })
 
