@@ -39,8 +39,33 @@ export class LocationCard extends React.Component {
         tempMin: (data.main.temp_min - 273.15).toFixed(1),
         sky: data.weather[0].main,
         windSpeed: data.wind.speed,
-        windDirection: data.wind.deg
+        // windDirection: data.wind.deg
       })
+
+      let windD = data.wind.deg;
+
+      if (windD > 348 && windD <= 11) { windD = "N" };
+      if (windD > 11 && windD <= 33) { windD = "NNE" };
+      if (windD > 33 && windD <= 56) { windD = "NE" };
+      if (windD > 56 && windD <= 78) { windD = "ENE" };
+      if (windD > 78 && windD <= 101) { windD = "E" };
+      if (windD > 101 && windD <= 123) { windD = "ESE" };
+      if (windD > 123 && windD <= 146) { windD = "SE" };
+      if (windD > 146 && windD <= 168) { windD = "SSE" };
+      if (windD > 168 && windD <= 191) { windD = "S" };
+      if (windD > 191 && windD <= 213) { windD = "SSW" };
+      if (windD > 213 && windD <= 236) { windD = "SW" };
+      if (windD > 236 && windD <= 258) { windD = "WSW" };
+      if (windD > 258 && windD <= 281) { windD = "W" };
+      if (windD > 281 && windD <= 303) { windD = "NWN" };
+      if (windD > 303 && windD <= 326) { windD = "NW" };
+      if (windD > 326 && windD <= 348) { windD = "NNW" };
+
+      this.setState({
+        windDirection: windD
+      })
+
+
     } catch (err) {
       console.log(err);
     }
@@ -65,7 +90,7 @@ export class LocationCard extends React.Component {
               <li>{this.state.feelsLike} C°<span>feels like</span></li>
               <li>{this.state.tempMin} C°<span>min</span></li>
               <li>{this.state.tempMax} C°<span>max</span></li>
-              <li>{this.state.windSpeed} m/s {this.state.windDirection}°<span>wind</span></li>
+              <li>{this.state.windSpeed} m/s {this.state.windDirection}<span>wind</span></li>
             </ul>
           </div>
         }

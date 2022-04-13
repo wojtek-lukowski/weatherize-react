@@ -88,7 +88,29 @@ export class Hourly extends React.Component {
         card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
         card.sky = data.hourly[i].weather[0].main;
         card.windSpeed = data.hourly[i].wind_speed;
-        card.windDirection = data.hourly[i].wind_deg;
+        // card.windDirection = data.hourly[i].wind_deg;
+
+        let windD = data.hourly[i].wind_deg;
+
+        if (windD > 348 && windD <= 11) { windD = "N" };
+        if (windD > 11 && windD <= 33) { windD = "NNE" };
+        if (windD > 33 && windD <= 56) { windD = "NE" };
+        if (windD > 56 && windD <= 78) { windD = "ENE" };
+        if (windD > 78 && windD <= 101) { windD = "E" };
+        if (windD > 101 && windD <= 123) { windD = "ESE" };
+        if (windD > 123 && windD <= 146) { windD = "SE" };
+        if (windD > 146 && windD <= 168) { windD = "SSE" };
+        if (windD > 168 && windD <= 191) { windD = "S" };
+        if (windD > 191 && windD <= 213) { windD = "SSW" };
+        if (windD > 213 && windD <= 236) { windD = "SW" };
+        if (windD > 236 && windD <= 258) { windD = "WSW" };
+        if (windD > 258 && windD <= 281) { windD = "W" };
+        if (windD > 281 && windD <= 303) { windD = "NWN" };
+        if (windD > 303 && windD <= 326) { windD = "NW" };
+        if (windD > 326 && windD <= 348) { windD = "NNW" };
+
+        card.windDirection = windD;
+
         card.pressure = data.hourly[i].pressure;
         card.humidity = data.hourly[i].humidity;
         preaparingHourlyCards.push(card);
@@ -137,7 +159,27 @@ export class Hourly extends React.Component {
         card.feelsLike = (data.daily[i].feels_like.day - 273.15).toFixed(1);
         card.sky = data.daily[i].weather[0].main;
         card.windSpeed = data.daily[i].wind_speed;
-        card.windDirection = data.daily[i].wind_deg;
+        // card.windDirection = data.daily[i].wind_deg;
+        let windD = data.hourly[i].wind_deg;
+
+        if (windD > 348 && windD <= 11) { windD = "N" };
+        if (windD > 11 && windD <= 33) { windD = "NNE" };
+        if (windD > 33 && windD <= 56) { windD = "NE" };
+        if (windD > 56 && windD <= 78) { windD = "ENE" };
+        if (windD > 78 && windD <= 101) { windD = "E" };
+        if (windD > 101 && windD <= 123) { windD = "ESE" };
+        if (windD > 123 && windD <= 146) { windD = "SE" };
+        if (windD > 146 && windD <= 168) { windD = "SSE" };
+        if (windD > 168 && windD <= 191) { windD = "S" };
+        if (windD > 191 && windD <= 213) { windD = "SSW" };
+        if (windD > 213 && windD <= 236) { windD = "SW" };
+        if (windD > 236 && windD <= 258) { windD = "WSW" };
+        if (windD > 258 && windD <= 281) { windD = "W" };
+        if (windD > 281 && windD <= 303) { windD = "NWN" };
+        if (windD > 303 && windD <= 326) { windD = "NW" };
+        if (windD > 326 && windD <= 348) { windD = "NNW" };
+
+        card.windDirection = windD;
         card.pressure = data.daily[i].pressure;
         card.humidity = data.daily[i].humidity;
         preaparingDailyCards.push(card);
@@ -241,7 +283,7 @@ export class Hourly extends React.Component {
                         <li>{this.state.hourlyCards[index].temperature} C°</li>
                         <li>{this.state.hourlyCards[index].sky}</li>
                         <li>{this.state.hourlyCards[index].windSpeed}</li>
-                        <li>{this.state.hourlyCards[index].windDirection}°</li>
+                        <li>{this.state.hourlyCards[index].windDirection}</li>
                         <li>{this.state.hourlyCards[index].feelsLike} C°</li>
                         <li>{this.state.hourlyCards[index].pressure} hPa</li>
                         <li>{this.state.hourlyCards[index].humidity}%</li>
@@ -250,12 +292,11 @@ export class Hourly extends React.Component {
                   </div>
                 </div>
                 <div className='rain-info'>
-                  {this.state.rainIn > 0 &&
+                  {this.state.rainIn > 0 ?
                     <div className='green'>Rain in {this.state.rainIn} mins
-                    </div>
+                    </div> :
+                    <div>No rain in the next hour</div>
                   }
-                  {!this.state.rainIn &&
-                    <div>No rain in the next hour</div>}
                 </div>
               </div>
               :
@@ -278,7 +319,7 @@ export class Hourly extends React.Component {
                         <li>{this.state.dailyCards[index].temperature} C°</li>
                         <li>{this.state.dailyCards[index].sky}</li>
                         <li>{this.state.dailyCards[index].windSpeed}</li>
-                        <li>{this.state.dailyCards[index].windDirection}°</li>
+                        <li>{this.state.dailyCards[index].windDirection}</li>
                         <li>{this.state.dailyCards[index].feelsLike} C°</li>
                         <li>{this.state.dailyCards[index].pressure} hPa</li>
                         <li>{this.state.dailyCards[index].humidity}%</li>
