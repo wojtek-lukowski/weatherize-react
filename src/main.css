@@ -108,12 +108,12 @@ li span {
   background-color: var(--card-background);
   color: var(--white);
   padding: var(--gap2);
+  border: 1px solid var(--card-background);
 }
 
-.current-location-card:hover {
-  /* box-sizing: border-box; */
-  /* border: 1px solid var(--primary-color); */
-  transform: translate(0, -3px);
+.current:hover {
+  border: 1px solid var(--primary-color);
+  /* transform: translate(0, -3px); */
 }
 
 h2.location {

@@ -92,7 +92,7 @@ export class Hourly extends React.Component {
 
         let windD = data.hourly[i].wind_deg;
 
-        if (windD > 348 && windD <= 11) { windD = "N" };
+        if (windD > 348 || windD <= 11) { windD = "N" };
         if (windD > 11 && windD <= 33) { windD = "NNE" };
         if (windD > 33 && windD <= 56) { windD = "NE" };
         if (windD > 56 && windD <= 78) { windD = "ENE" };
@@ -162,7 +162,7 @@ export class Hourly extends React.Component {
         // card.windDirection = data.daily[i].wind_deg;
         let windD = data.hourly[i].wind_deg;
 
-        if (windD > 348 && windD <= 11) { windD = "N" };
+        if (windD > 348 || windD <= 11) { windD = "N" };
         if (windD > 11 && windD <= 33) { windD = "NNE" };
         if (windD > 33 && windD <= 56) { windD = "NE" };
         if (windD > 56 && windD <= 78) { windD = "ENE" };

@@ -54,7 +54,7 @@ export class CurrentLocationCard extends React.Component {
 
       let windD = data.wind.deg;
 
-      if (windD > 348 && windD <= 11) { windD = "N" };
+      if (windD > 348 || windD <= 11) { windD = "N" };
       if (windD > 11 && windD <= 33) { windD = "NNE" };
       if (windD > 33 && windD <= 56) { windD = "NE" };
       if (windD > 56 && windD <= 78) { windD = "ENE" };
@@ -95,7 +95,7 @@ export class CurrentLocationCard extends React.Component {
           <div className='grey'>Your current location</div>
         }
         {this.state.location &&
-          <div className='current-location-card'>
+          <div className='current-location-card current'>
             <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
             {/* <div className='main-data'>
               <p className="temperature">{this.state.temperature} C°</p>

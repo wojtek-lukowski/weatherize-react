@@ -44,7 +44,7 @@ export class LocationCard extends React.Component {
 
       let windD = data.wind.deg;
 
-      if (windD > 348 && windD <= 11) { windD = "N" };
+      if (windD > 348 || windD <= 11) { windD = "N" };
       if (windD > 11 && windD <= 33) { windD = "NNE" };
       if (windD > 33 && windD <= 56) { windD = "NE" };
       if (windD > 56 && windD <= 78) { windD = "ENE" };
