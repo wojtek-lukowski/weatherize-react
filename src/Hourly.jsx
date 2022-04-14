@@ -304,13 +304,10 @@ export class Hourly extends React.Component {
       })
 
       const precipProbChart = [['Day', 'Precipitation probability']];
-      console.log(this.state.dailyCards);
 
       for (let i = 0; i < this.state.dailyCards.length; i++) {
         precipProbChart.push([this.state.dailyCards[i].time, this.state.dailyCards[i].precProb * 100]);
       }
-
-      console.log('XXXX', precipProbChart);
 
       this.setState({
         precipProbChart
@@ -354,7 +351,7 @@ export class Hourly extends React.Component {
 
   render() {
     // console.log('state hourly cards', this.state.hourlyCards);
-    console.log('state daily cards', this.state.dailyCards);
+    // console.log('state daily cards', this.state.dailyCards);
     // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
     // console.log('h/d', this.state.hourly)
