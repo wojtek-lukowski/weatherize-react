@@ -54,6 +54,8 @@ export class FavsHourly extends React.Component {
     const url = window.location.href;
     const city = url.split('/').at(-1);
     console.log('city', city);
+
+    console.log('props', this.props);
     try {
       this.setState({
         location: city
