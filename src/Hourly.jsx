@@ -45,10 +45,20 @@ export class Hourly extends React.Component {
       {
         title: "Sky in the next 8 days",
       },
+      precipProbChart: [],
+      precipProbChartOptions:
+      {
+        title: "Precipitation probability",
+        redFrom: 90,
+        redTo: 100,
+        yellowFrom: 75,
+        yellowTo: 90,
+      },
     }
   }
 
   async componentDidMount() {
+    console.clear();
     try {
       const lat = localStorage.getItem('latitude');
       const lng = localStorage.getItem('longitude');
@@ -205,7 +215,8 @@ export class Hourly extends React.Component {
           windGusts: '',
           feelsLike: '',
           pressure: '',
-          humidity: ''
+          humidity: '',
+          precProb: ''
         };
 
         card.time = part1[i];
@@ -220,6 +231,7 @@ export class Hourly extends React.Component {
         card.sky = data.daily[i].weather[0].main;
         card.windSpeed = data.daily[i].wind_speed.toFixed(1);
         card.windGusts = data.daily[i].wind_gust.toFixed(1);
+        card.precProb = data.daily[i].pop;
         // card.windDirection = data.daily[i].wind_deg;
         let windD = data.hourly[i].wind_deg;
 
@@ -271,34 +283,38 @@ export class Hourly extends React.Component {
         tempChartDaily
       })
 
-      const skyChartDaily = [['Day', 'Morning', 'Midday', 'Evening', 'Night']];
-
+      const skyChartDaily = [['Sky', 'Number of Days']];
       const skyTypes = [];
       for (let i = 0; i < this.state.dailyCards.length; i++) {
         skyTypes.push(this.state.dailyCards[i].sky)
-        console.log(skyTypes);
       }
-
       const skyTypecounts = {};
       skyTypes.forEach((x) => {
         skyTypecounts[x] = (skyTypecounts[x] || 0) + 1;
       });
+      const skyTypesArray = (Object.keys(skyTypecounts));
+      const skyTypesNumbers = (Object.values(skyTypecounts));
 
-      console.log(skyTypecounts);
-
-
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        skyChartDaily.push(
-          skyTypecounts[i]
-        )
+      for (let i = 0; i < skyTypesArray.length; i++) {
+        skyChartDaily.push([skyTypesArray[i], skyTypesNumbers[i]]);
       }
+
       this.setState({
         skyChartDaily
       })
 
-      console.log(this.state.skyChartDaily);
+      const precipProbChart = [['Day', 'Precipitation probability']];
+      console.log(this.state.dailyCards);
 
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        precipProbChart.push([this.state.dailyCards[i].time, this.state.dailyCards[i].precProb * 100]);
+      }
 
+      console.log('XXXX', precipProbChart);
+
+      this.setState({
+        precipProbChart
+      })
 
       //setting up minute cards
       let preaparingMinuteCards = [];
@@ -337,12 +353,14 @@ export class Hourly extends React.Component {
   }
 
   render() {
-    console.log('state hourly cards', this.state.hourlyCards);
-    // console.log('state daily cards', this.state.dailyCards);
+    // console.log('state hourly cards', this.state.hourlyCards);
+    console.log('state daily cards', this.state.dailyCards);
     // console.log('state minutely cards', this.state.minutelyCards);
     // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
+    // console.log(this.state.skyChartDaily);
+
 
     return (
       <div className='content'>
@@ -475,14 +493,18 @@ export class Hourly extends React.Component {
                     data={this.state.skyChartDaily}
                     options={this.state.skyChartDailyOptions}
                   />
+                  <p>Precipitation probability</p>
+                  <Chart
+                    chartType="Gauge"
+                    width="100%"
+                    data={this.state.precipProbChart}
+                    options={this.state.precipProbChartOptions}
+                  />
                 </div>
               </div>
             }
           </div>
         }
-        {/* <Link to='/'>
-          <button className='button-primary margin-top'>Home</button>
-        </Link> */}
       </div>
     )
   }

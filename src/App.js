@@ -20,7 +20,7 @@ function App() {
       <Route exact path='/hourly' element={ <Hourly /> }></Route>
       <Route exact path='/login' element={ <Login /> }></Route>
       <Route exact path='/register' element={ <Registration /> }></Route>
-      {/* <Route exact path='/favorites/:city' element={ <FavsHourly /> }></Route> */}
+      {/* <Route exact path='/favorite/:city' element={ <FavsHourly /> }></Route> */}
         </Routes>
       </Router>
     </div>

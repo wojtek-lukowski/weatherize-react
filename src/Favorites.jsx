@@ -14,7 +14,9 @@ function Favorites() {
       <p className='grey'>Favorites</p>
       {favorites.map(city =>
         <div key={city}>
+          {/* <Link to={`/favorite/${city}`}> */}
           <LocationCard city={city} />
+          {/* </Link> */}
         </div>
       )}
     </div>

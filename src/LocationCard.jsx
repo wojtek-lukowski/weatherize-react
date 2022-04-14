@@ -22,6 +22,7 @@ export class LocationCard extends React.Component {
   }
 
   componentDidMount() {
+    console.log('props', this.props)
     this.weatherCity(this.props.city);
   }
 
