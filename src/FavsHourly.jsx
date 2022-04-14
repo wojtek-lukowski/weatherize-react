@@ -11,6 +11,11 @@ export class FavsHourly extends React.Component {
     super();
 
     this.state = {
+      position:
+      {
+        latitude: '',
+        longitude: ''
+      },
       location: '',
       country: '',
       hourlyCards: [],
@@ -45,6 +50,15 @@ export class FavsHourly extends React.Component {
       {
         title: "Sky in the next 8 days",
       },
+      precipProbChart: [],
+      precipProbChartOptions:
+      {
+        title: "Precipitation probability",
+        redFrom: 90,
+        redTo: 100,
+        yellowFrom: 75,
+        yellowTo: 90,
+      }
     }
   }
 
@@ -72,11 +86,32 @@ export class FavsHourly extends React.Component {
       const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
       const data = await (await fetch(api)).json();
       // console.clear();
-      console.log(data);
+      console.log('fav data', data);
+      console.log('fav data', data.sys.country);
+      this.setState({
+        position: data.coord,
+        country: data.sys.country
+      })
+      this.getHourly(data.coord.lat, data.coord.lon);
       // console.log('data.daily', data.daily);
       // console.log('data.hourly', data.hourly);
       // console.log('data.minutely', data.minutely);
       // console.log(data.daily);
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  async getHourly(lat, lng) {
+    try {
+      const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
+      const data = await (await fetch(api)).json();
+      // console.clear();
+      console.log('now hourly data', data);
+
+
 
       //setting up hourly cards
       let preaparingHourlyCards = [];
@@ -208,7 +243,8 @@ export class FavsHourly extends React.Component {
           windGusts: '',
           feelsLike: '',
           pressure: '',
-          humidity: ''
+          humidity: '',
+          precProb: ''
         };
 
         card.time = part1[i];
@@ -223,6 +259,7 @@ export class FavsHourly extends React.Component {
         card.sky = data.daily[i].weather[0].main;
         card.windSpeed = data.daily[i].wind_speed.toFixed(1);
         card.windGusts = data.daily[i].wind_gust.toFixed(1);
+        card.precProb = data.daily[i].pop;
         // card.windDirection = data.daily[i].wind_deg;
         let windD = data.hourly[i].wind_deg;
 
@@ -294,6 +331,16 @@ export class FavsHourly extends React.Component {
         skyChartDaily
       })
 
+      const precipProbChart = [['Day', 'Precipitation probability']];
+
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        precipProbChart.push([this.state.dailyCards[i].time, this.state.dailyCards[i].precProb * 100]);
+      }
+
+      this.setState({
+        precipProbChart
+      })
+
       //setting up minute cards
       let preaparingMinuteCards = [];
 
@@ -338,6 +385,7 @@ export class FavsHourly extends React.Component {
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
+    console.log('state position', this.state.position)
 
 
     return (
@@ -470,6 +518,13 @@ export class FavsHourly extends React.Component {
                     width="100%"
                     data={this.state.skyChartDaily}
                     options={this.state.skyChartDailyOptions}
+                  />
+                  <p>Precipitation probability</p>
+                  <Chart
+                    chartType="Gauge"
+                    width="100%"
+                    data={this.state.precipProbChart}
+                    options={this.state.precipProbChartOptions}
                   />
                 </div>
               </div>
