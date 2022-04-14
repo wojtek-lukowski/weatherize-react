@@ -24,3 +24,6 @@ yarn-error.log*
 
 # API key
 config.js
+
+# yarn
+yarn.lock
