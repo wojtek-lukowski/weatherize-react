@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { config } from './config';
 import { Chart } from 'react-google-charts';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Bar, BarChart } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Bar, BarChart, ComposedChart } from 'recharts';
 const key = config.API_KEY;
 
 
@@ -25,7 +25,9 @@ export class Hourly extends React.Component {
       tempChartDaily: [],
       humidityAndPressureChartDaily: [],
       skyChartDaily: [],
-      precipProbChart: []
+      precipProbChart: [],
+      tempRangeDaily: [],
+      allTempDaily: []
     }
   }
 
@@ -277,6 +279,38 @@ export class Hourly extends React.Component {
         tempChartDaily
       })
 
+      //temperature range  + temp & feel daily
+      const allTempDaily = [];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        allTempDaily.push({
+          day: this.state.dailyCards[i].time.toString(),
+          temperature: parseInt(this.state.dailyCards[i].temperature),
+          feelsLike: parseInt(this.state.dailyCards[i].feelsLike),
+          range: [
+            parseInt(this.state.dailyCards[i].temperatureMin),
+            parseInt(this.state.dailyCards[i].temperatureMax)
+          ]
+        })
+      }
+      this.setState({
+        allTempDaily
+      })
+
+      //temperature range daily
+      const tempRangeDaily = [];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        tempRangeDaily.push({
+          day: this.state.dailyCards[i].time.toString(),
+          range: [
+            parseInt(this.state.dailyCards[i].temperatureMin),
+            parseInt(this.state.dailyCards[i].temperatureMax)
+          ]
+        })
+      }
+      this.setState({
+        tempRangeDaily
+      })
+
       //humidity & pressure daily
       const humidityAndPressureChartDaily = [];
       for (let i = 0; i < this.state.dailyCards.length; i++) {
@@ -384,7 +418,7 @@ export class Hourly extends React.Component {
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
-    console.log(this.state.humidityAndPressureChartHourly);
+    // console.log(this.state.tempRangeDaily);
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
@@ -583,7 +617,7 @@ export class Hourly extends React.Component {
                   </div>
                 </div>
                 <div className='charts'>
-                  <p>Temperature & feel</p>
+                  {/* <p>Temperature & feel</p>
                   <ResponsiveContainer
                     width='100%'
                     height={250}>
@@ -622,7 +656,37 @@ export class Hourly extends React.Component {
                         dot={false}
                       />
                     </LineChart>
+                  </ResponsiveContainer> */}
+
+                  <p>Daily temperature range, average & feel</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <ComposedChart width={730} height={250} data={this.state.allTempDaily}>
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      />
+                      <Tooltip />
+                      <Bar dataKey="range" fill="var(--card-background)" />
+                      <Line type="monotone"
+                        dataKey="temperature"
+                        stroke="var(--primary-color)"
+                        dot={false}
+                      />
+                      <Line type="monotone"
+                        dataKey="feelsLike"
+                        stroke="var(--text-color)"
+                        dot={false}
+                      />
+                      {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+                    </ComposedChart>
                   </ResponsiveContainer>
+
                   <p>Pressure & humidity</p>
                   <ResponsiveContainer
                     width='100%'
@@ -667,6 +731,7 @@ export class Hourly extends React.Component {
                       <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
                       <XAxis dataKey="day" />
                       <YAxis />
+                      <Tooltip />
                       {/* <Legend
                         layout='vertical'
                         align='center'
@@ -674,6 +739,20 @@ export class Hourly extends React.Component {
                       /> */}
                     </BarChart>
                   </ResponsiveContainer>
+
+                  {/* <p>Daily temperature range</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <BarChart width={730} height={250} data={this.state.tempRangeDaily}>
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="range" fill="var(--card-background)" />
+                    </BarChart>
+                  </ResponsiveContainer> */}
+
+
                   {/* <p>Sky</p>
                   <ResponsiveContainer
                     width='100%'
