@@ -9,6 +9,7 @@ const key = config.API_KEY;
 function Dashboard() {
 
   const [user, setUser] = useState('null');
+  console.clear();
 
   return (
 

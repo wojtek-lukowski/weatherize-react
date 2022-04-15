@@ -131,9 +131,12 @@ h2.location span {
 .sky {
   display: inline-block;
   font-size: 2rem;
-  /* font-weight: bold; */
   color: var(--primary-color);
   margin: var(--gap2) 0;
+}
+
+.temperature {
+  font-weight: 600;
 }
 
 .main-data {

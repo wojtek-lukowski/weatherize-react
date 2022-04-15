@@ -7,7 +7,7 @@ const key = config.API_KEY;
 
 export class FavsHourly extends React.Component {
 
-  constructor() {
+  constructor(props) {
     super();
 
     this.state = {
@@ -64,12 +64,9 @@ export class FavsHourly extends React.Component {
 
   async componentDidMount() {
     console.clear();
-    console.log('url', window.location.href);
+    console.log('favorite hourly props', this.props.city);
     const url = window.location.href;
     const city = url.split('/').at(-1);
-    console.log('city', city);
-
-    console.log('props', this.props.city);
 
     try {
       this.setState({
@@ -86,8 +83,6 @@ export class FavsHourly extends React.Component {
       const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
       const data = await (await fetch(api)).json();
       // console.clear();
-      console.log('fav data', data);
-      console.log('fav data', data.sys.country);
       this.setState({
         position: data.coord,
         country: data.sys.country
@@ -108,11 +103,6 @@ export class FavsHourly extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      // console.clear();
-      console.log('now hourly data', data);
-
-
-
       //setting up hourly cards
       let preaparingHourlyCards = [];
 
@@ -385,7 +375,7 @@ export class FavsHourly extends React.Component {
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
-    console.log('state position', this.state.position)
+    // console.log('state position', this.state.position)
 
 
     return (

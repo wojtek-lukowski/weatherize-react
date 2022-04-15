@@ -1,6 +1,7 @@
 import React from 'react';
 import { config } from './config';
 import { Link } from 'react-router-dom';
+import { FavsHourly } from './FavsHourly';
 const key = config.API_KEY;
 
 export class LocationCard extends React.Component {
@@ -22,7 +23,7 @@ export class LocationCard extends React.Component {
   }
 
   componentDidMount() {
-    console.log('props', this.props)
+    console.log('location card props', this.props);
     this.weatherCity(this.props.city);
   }
 
