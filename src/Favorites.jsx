@@ -14,12 +14,12 @@ function Favorites() {
       <p className='grey'>Favorites</p>
       {favorites.map(city =>
         <div key={city}>
-          <Link to={{
+          {/* <Link to={{
             pathname: `/favorite/${city}`,
             city
-          }}>
-            <LocationCard city={city} />
-          </Link>
+          }}> */}
+          <LocationCard city={city} />
+          {/* </Link> */}
         </div>
       )}
     </div>

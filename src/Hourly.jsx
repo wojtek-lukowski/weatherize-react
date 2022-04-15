@@ -27,7 +27,8 @@ export class Hourly extends React.Component {
       skyChartDaily: [],
       precipProbChart: [],
       tempRangeDaily: [],
-      allTempDaily: []
+      allTempDaily: [],
+      windChartDaily: []
     }
   }
 
@@ -324,6 +325,19 @@ export class Hourly extends React.Component {
         humidityAndPressureChartDaily
       })
 
+      //wind & wind gusts daily
+      const windChartDaily = [];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        windChartDaily.push({
+          day: this.state.dailyCards[i].time.toString(),
+          wind: parseInt(this.state.dailyCards[i].windSpeed),
+          windGusts: parseInt(this.state.dailyCards[i].windGusts)
+        })
+      }
+      this.setState({
+        windChartDaily
+      })
+
       //sky pie chart
       const skyChartDaily = [];
       const skyTypes = [];
@@ -595,8 +609,8 @@ export class Hourly extends React.Component {
                     <li>Wind gusts</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
-                    <li>Min</li>
                     <li>Max</li>
+                    <li>Min</li>
                   </ul>
                   <div className='hourly-cards-moving'>
                     {(this.state.dailyCards).map((day, index) =>
@@ -610,8 +624,8 @@ export class Hourly extends React.Component {
                         <li>{this.state.dailyCards[index].windGusts}</li>
                         <li>{this.state.dailyCards[index].pressure} hPa</li>
                         <li>{this.state.dailyCards[index].humidity}%</li>
-                        <li>{this.state.dailyCards[index].temperatureMin} C°</li>
                         <li>{this.state.dailyCards[index].temperatureMax} C°</li>
+                        <li>{this.state.dailyCards[index].temperatureMin} C°</li>
                       </ul>
                     )}
                   </div>
@@ -687,6 +701,23 @@ export class Hourly extends React.Component {
                     </ComposedChart>
                   </ResponsiveContainer>
 
+                  <p>Precipitation probability</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <BarChart width={600} height={250} data={this.state.precipProbChart}>
+                      <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      {/* <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      /> */}
+                    </BarChart>
+                  </ResponsiveContainer>
+
                   <p>Pressure & humidity</p>
                   <ResponsiveContainer
                     width='100%'
@@ -723,22 +754,38 @@ export class Hourly extends React.Component {
                       />
                     </LineChart>
                   </ResponsiveContainer>
-                  <p>Precipitation probability</p>
+
+                  <p>Wind & wind gusts</p>
                   <ResponsiveContainer
                     width='100%'
                     height={250}>
-                    <BarChart width={600} height={250} data={this.state.precipProbChart}>
-                      <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
+                    <LineChart
+                      chartType="LineChart"
+                      width={600}
+                      height={250}
+                      data={this.state.windChartDaily}
+                    >
                       <XAxis dataKey="day" />
                       <YAxis />
-                      <Tooltip />
-                      {/* <Legend
+                      <Legend
                         layout='vertical'
                         align='center'
                         verticalAlign='top'
-                      /> */}
-                    </BarChart>
+                      />
+                      <Tooltip />
+                      <Line type="monotone"
+                        dataKey="wind"
+                        stroke="var(--primary-color)"
+                        dot={false}
+                      />
+                      <Line type="monotone"
+                        dataKey="windGusts"
+                        stroke="var(--text-color)"
+                        dot={false}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
+
 
                   {/* <p>Daily temperature range</p>
                   <ResponsiveContainer
