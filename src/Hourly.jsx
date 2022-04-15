@@ -436,7 +436,7 @@ export class Hourly extends React.Component {
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
-    // console.log(this.state.tempRangeDaily);
+    console.log(this.state.tempChartHourly);
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
