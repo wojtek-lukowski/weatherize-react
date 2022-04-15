@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { config } from './config';
 import { Chart } from 'react-google-charts';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Bar, BarChart } from 'recharts';
 const key = config.API_KEY;
 
 
@@ -23,6 +23,7 @@ export class Hourly extends React.Component {
       windChartHourly: [],
       humidityAndPressureChartHourly: [],
       tempChartDaily: [],
+      humidityAndPressureChartDaily: [],
       skyChartDaily: [],
       precipProbChart: []
     }
@@ -133,7 +134,7 @@ export class Hourly extends React.Component {
       })
 
       //setting up data for hourly charts
-      //temperature & feels like
+      //temperature & feels like hourly
       const tempChartHourly = [];
       for (let i = 0; i < this.state.hourlyCards.length; i++) {
         tempChartHourly.push({
@@ -143,12 +144,11 @@ export class Hourly extends React.Component {
         }
         )
       }
-
       this.setState({
         tempChartHourly
       })
 
-      //wind & wind gusts
+      //wind & wind gusts hourly
       const windChartHourly = [];
       for (let i = 0; i < this.state.hourlyCards.length; i++) {
         windChartHourly.push({
@@ -174,9 +174,6 @@ export class Hourly extends React.Component {
         humidityAndPressureChartHourly
       })
 
-
-
-
       //setting up daily cards
       let preaparingDailyCards = [];
 
@@ -200,6 +197,8 @@ export class Hourly extends React.Component {
           feelsLikeMorning: '',
           feelsLikeEveneing: '',
           feelsLikeNight: '',
+          temperatureMax: '',
+          temperatureMin: '',
           sky: '',
           windSpeed: '',
           windDirection: '',
@@ -219,6 +218,8 @@ export class Hourly extends React.Component {
         card.temperatureMorning = (data.daily[i].temp.morn - 273.15).toFixed(1);
         card.temperatureEvening = (data.daily[i].temp.eve - 273.15).toFixed(1);
         card.temperatureNight = (data.daily[i].temp.night - 273.15).toFixed(1);
+        card.temperatureMax = (data.daily[i].temp.max - 273.15).toFixed(1);
+        card.temperatureMin = (data.daily[i].temp.min - 273.15).toFixed(1);
         card.sky = data.daily[i].weather[0].main;
         card.windSpeed = data.daily[i].wind_speed.toFixed(1);
         card.windGusts = data.daily[i].wind_gust.toFixed(1);
@@ -260,21 +261,37 @@ export class Hourly extends React.Component {
       })
 
       //setting up data for daily charts
-      const tempChartDaily = [['Day', 'Morning', 'Midday', 'Evening', 'Night']];
+      //temperature & feels like daily
+      const tempChartDaily = [];
       for (let i = 0; i < this.state.dailyCards.length; i++) {
-        tempChartDaily.push([
-          this.state.dailyCards[i].time,
-          parseInt(this.state.dailyCards[i].temperatureMorning),
-          parseInt(this.state.dailyCards[i].temperature),
-          parseInt(this.state.dailyCards[i].temperatureEvening),
-          parseInt(this.state.dailyCards[i].temperatureNight),
-        ])
+        tempChartDaily.push({
+          time: this.state.dailyCards[i].time.toString(),
+          temperature: parseInt(this.state.dailyCards[i].temperature),
+          min: parseInt(this.state.dailyCards[i].temperatureMin),
+          max: parseInt(this.state.dailyCards[i].temperatureMax),
+          feelsLike: parseInt(this.state.dailyCards[i].feelsLike)
+        }
+        )
       }
       this.setState({
         tempChartDaily
       })
 
-      const skyChartDaily = [['Sky', 'Number of Days']];
+      //humidity & pressure daily
+      const humidityAndPressureChartDaily = [];
+      for (let i = 0; i < this.state.dailyCards.length; i++) {
+        humidityAndPressureChartDaily.push({
+          time: this.state.dailyCards[i].time.toString(),
+          humidity: parseInt(this.state.dailyCards[i].humidity),
+          pressure: parseInt(this.state.dailyCards[i].pressure)
+        })
+      }
+      this.setState({
+        humidityAndPressureChartDaily
+      })
+
+      //sky pie chart
+      const skyChartDaily = [];
       const skyTypes = [];
       for (let i = 0; i < this.state.dailyCards.length; i++) {
         skyTypes.push(this.state.dailyCards[i].sky)
@@ -287,17 +304,36 @@ export class Hourly extends React.Component {
       const skyTypesNumbers = (Object.values(skyTypecounts));
 
       for (let i = 0; i < skyTypesArray.length; i++) {
-        skyChartDaily.push([skyTypesArray[i], skyTypesNumbers[i]]);
+        skyChartDaily.push({
+          sky: skyTypesArray[i],
+          value: skyTypesNumbers[i]
+        });
       }
 
       this.setState({
         skyChartDaily
       })
 
-      const precipProbChart = [['Day', 'Precipitation probability']];
+      const RADIAN = Math.PI / 180;
+      const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
+        return (
+          <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            {`${(percent * 100).toFixed(0)}%`}
+          </text>
+        );
+      };
+
+      //precipitation probability daily chart
+      const precipProbChart = [];
       for (let i = 0; i < this.state.dailyCards.length; i++) {
-        precipProbChart.push([this.state.dailyCards[i].time, this.state.dailyCards[i].precProb * 100]);
+        precipProbChart.push({
+          day: this.state.dailyCards[i].time,
+          probability: this.state.dailyCards[i].precProb * 100
+        });
       }
 
       this.setState({
@@ -349,6 +385,7 @@ export class Hourly extends React.Component {
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
     console.log(this.state.humidityAndPressureChartHourly);
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
     return (
@@ -524,12 +561,8 @@ export class Hourly extends React.Component {
                     <li>Wind gusts</li>
                     <li>Pressure</li>
                     <li>Humidity</li>
-                    <li>Morning</li>
-                    <li>Feels like</li>
-                    <li>Evening</li>
-                    <li>Feels like</li>
-                    <li>Night</li>
-                    <li>Feels like</li>
+                    <li>Min</li>
+                    <li>Max</li>
                   </ul>
                   <div className='hourly-cards-moving'>
                     {(this.state.dailyCards).map((day, index) =>
@@ -543,36 +576,130 @@ export class Hourly extends React.Component {
                         <li>{this.state.dailyCards[index].windGusts}</li>
                         <li>{this.state.dailyCards[index].pressure} hPa</li>
                         <li>{this.state.dailyCards[index].humidity}%</li>
-                        <li>{this.state.dailyCards[index].temperatureMorning} C°</li>
-                        <li>{this.state.dailyCards[index].feelsLikeMorning} C°</li>
-                        <li>{this.state.dailyCards[index].temperatureEvening} C°</li>
-                        <li>{this.state.dailyCards[index].feelsLikeEvening} C°</li>
-                        <li>{this.state.dailyCards[index].temperatureNight} C°</li>
-                        <li>{this.state.dailyCards[index].feelsLikeNight} C°</li>
+                        <li>{this.state.dailyCards[index].temperatureMin} C°</li>
+                        <li>{this.state.dailyCards[index].temperatureMax} C°</li>
                       </ul>
                     )}
                   </div>
                 </div>
                 <div className='charts'>
-                  <Chart
-                    chartType="Bar"
-                    width="100%"
-                    data={this.state.tempChartDaily}
-                    options={this.state.tempChartDailyOptions}
-                  />
-                  <Chart
-                    chartType="PieChart"
-                    width="100%"
-                    data={this.state.skyChartDaily}
-                    options={this.state.skyChartDailyOptions}
-                  />
+                  <p>Temperature & feel</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <LineChart
+                      chartType="LineChart"
+                      width={600}
+                      height={250}
+                      data={this.state.tempChartDaily}
+                    >
+                      <XAxis dataKey="time" />
+                      <YAxis />
+                      <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      />
+                      <Tooltip />
+                      <Line type="monotone"
+                        dataKey="temperature"
+                        stroke="var(--primary-color)"
+                        dot={false}
+                      />
+                      <Line type="monotone"
+                        dataKey="feelsLike"
+                        stroke="var(--text-color)"
+                        dot={false}
+                      />
+                      <Line type="monotone"
+                        dataKey="min"
+                        stroke="blue"
+                        dot={false}
+                      />
+                      <Line type="monotone"
+                        dataKey="max"
+                        stroke="red"
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                  <p>Pressure & humidity</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <LineChart
+                      chartType="LineChart"
+                      width={600}
+                      height={250}
+                      data={this.state.humidityAndPressureChartDaily}
+                    >
+                      <XAxis dataKey="time" />
+                      <YAxis yAxisId="left"
+                        domain={[900, 1090]}
+                      />
+                      <YAxis yAxisId="right"
+                        orientation="right" />
+                      <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      />
+                      <Tooltip />
+                      <Line type="monotone"
+                        dataKey="pressure"
+                        stroke="var(--primary-color)"
+                        dot={false}
+                        yAxisId="left"
+                      />
+                      <Line type="monotone"
+                        dataKey="humidity"
+                        stroke="var(--text-color)"
+                        dot={false}
+                        yAxisId="right"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                   <p>Precipitation probability</p>
-                  <Chart
-                    chartType="Gauge"
-                    width="100%"
-                    data={this.state.precipProbChart}
-                    options={this.state.precipProbChartOptions}
-                  />
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <BarChart width={600} height={250} data={this.state.precipProbChart}>
+                      <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      {/* <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      /> */}
+                    </BarChart>
+                  </ResponsiveContainer>
+                  {/* <p>Sky</p>
+                  <ResponsiveContainer
+                    width='100%'
+                    height={250}>
+                    <PieChart width={400} height={400}>
+                      <Pie
+                        data={this.state.skyChartDaily}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        // label={renderCustomizedLabel}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {this.state.skyChartDaily.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Legend
+                        layout='vertical'
+                        align='center'
+                        verticalAlign='top'
+                      />
+                    </PieChart>
+                  </ResponsiveContainer> */}
                 </div>
               </div>
             }
