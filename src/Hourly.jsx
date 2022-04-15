@@ -424,8 +424,20 @@ export class Hourly extends React.Component {
     }
   }
 
+
   getData = () => {
-    return this.state.tempChartHourly
+
+    const tempChartHourly = [];
+    for (let i = 0; i < this.state.hourlyCards.length; i++) {
+      tempChartHourly.push({
+        time: this.state.hourlyCards[i].time.toString(),
+        temperature: parseInt(this.state.hourlyCards[i].temperature),
+        feelsLike: parseInt(this.state.hourlyCards[i].feelsLike)
+      }
+      )
+    }
+    return tempChartHourly
+
   }
 
   render() {
