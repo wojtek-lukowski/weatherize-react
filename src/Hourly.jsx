@@ -19,16 +19,6 @@ export class Hourly extends React.Component {
       minutelyCards: [],
       rainIn: null,
       hourly: true,
-      // tempChartHourly: [],
-      // windChartHourly: [],
-      // humidityAndPressureChartHourly: [],
-      tempChartDaily: [],
-      humidityAndPressureChartDaily: [],
-      skyChartDaily: [],
-      precipProbChart: [],
-      tempRangeDaily: [],
-      allTempDaily: [],
-      windChartDaily: []
     }
   }
 
