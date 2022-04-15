@@ -424,6 +424,10 @@ export class Hourly extends React.Component {
     }
   }
 
+  getData = () => {
+    return this.state.tempChartHourly
+  }
+
   render() {
     // console.log('state hourly cards', this.state.hourlyCards);
     // console.log('state daily cards', this.state.dailyCards);
@@ -506,7 +510,8 @@ export class Hourly extends React.Component {
                       chartType="LineChart"
                       width={600}
                       height={250}
-                      data={this.state.tempChartHourly}
+                      // data={this.state.tempChartHourly}
+                      data={this.getData()}
                     >
                       <XAxis dataKey="time" />
                       <YAxis />
