@@ -19,9 +19,9 @@ export class Hourly extends React.Component {
       minutelyCards: [],
       rainIn: null,
       hourly: true,
-      tempChartHourly: [],
-      windChartHourly: [],
-      humidityAndPressureChartHourly: [],
+      // tempChartHourly: [],
+      // windChartHourly: [],
+      // humidityAndPressureChartHourly: [],
       tempChartDaily: [],
       humidityAndPressureChartDaily: [],
       skyChartDaily: [],
@@ -53,12 +53,7 @@ export class Hourly extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      // console.clear();
       console.log(data);
-      // console.log('data.daily', data.daily);
-      // console.log('data.hourly', data.hourly);
-      // console.log('data.minutely', data.minutely);
-      // console.log(data.daily);
 
       //setting up hourly cards
       let preaparingHourlyCards = [];
@@ -69,8 +64,6 @@ export class Hourly extends React.Component {
       }
 
       const hours48 = hours24.concat(hours24);
-
-      // console.log('hours48', hours48);
 
       let timeNow = new Date();
       timeNow = timeNow.toLocaleTimeString().split('');
@@ -97,14 +90,12 @@ export class Hourly extends React.Component {
           humidity: '',
         };
 
-        // card.time = new Date(data.hourly[i].dt).toLocaleTimeString();
         card.time = currentTimeArray[i];
         card.temperature = (data.hourly[i].temp - 273.15).toFixed(1);
         card.feelsLike = (data.hourly[i].feels_like - 273.15).toFixed(1);
         card.sky = data.hourly[i].weather[0].main;
         card.windSpeed = data.hourly[i].wind_speed.toFixed(1);
         card.windGusts = data.hourly[i].wind_gust.toFixed(1);
-        // card.windDirection = data.hourly[i].wind_deg;
 
         let windD = data.hourly[i].wind_deg;
 
@@ -134,47 +125,6 @@ export class Hourly extends React.Component {
 
       this.setState({
         hourlyCards: preaparingHourlyCards
-      })
-
-      //setting up data for hourly charts
-      //temperature & feels like hourly
-      const tempChartHourly = [];
-      for (let i = 0; i < this.state.hourlyCards.length; i++) {
-        tempChartHourly.push({
-          time: this.state.hourlyCards[i].time.toString(),
-          temperature: parseInt(this.state.hourlyCards[i].temperature),
-          feelsLike: parseInt(this.state.hourlyCards[i].feelsLike)
-        }
-        )
-      }
-      this.setState({
-        tempChartHourly
-      })
-
-      //wind & wind gusts hourly
-      const windChartHourly = [];
-      for (let i = 0; i < this.state.hourlyCards.length; i++) {
-        windChartHourly.push({
-          time: this.state.hourlyCards[i].time.toString(),
-          wind: parseInt(this.state.hourlyCards[i].windSpeed),
-          windGusts: parseInt(this.state.hourlyCards[i].windGusts)
-        })
-      }
-      this.setState({
-        windChartHourly
-      })
-
-      //humidity & pressure
-      const humidityAndPressureChartHourly = [];
-      for (let i = 0; i < this.state.hourlyCards.length; i++) {
-        humidityAndPressureChartHourly.push({
-          time: this.state.hourlyCards[i].time.toString(),
-          humidity: parseInt(this.state.hourlyCards[i].humidity),
-          pressure: parseInt(this.state.hourlyCards[i].pressure)
-        })
-      }
-      this.setState({
-        humidityAndPressureChartHourly
       })
 
       //setting up daily cards
@@ -227,7 +177,7 @@ export class Hourly extends React.Component {
         card.windSpeed = data.daily[i].wind_speed.toFixed(1);
         card.windGusts = data.daily[i].wind_gust.toFixed(1);
         card.precProb = data.daily[i].pop;
-        // card.windDirection = data.daily[i].wind_deg;
+
         let windD = data.hourly[i].wind_deg;
 
         if (windD > 348 || windD <= 11) { windD = "N" };
@@ -258,134 +208,8 @@ export class Hourly extends React.Component {
       })
 
       const rainIn = this.state.minutelyCards.findIndex(time => { return time.precipitation === 0 });
-      // const rainArray = this.state.minutelyCards.filter(time => { return time.precipitation === 0 });
       this.setState({
         rainIn
-      })
-
-      //setting up data for daily charts
-      //temperature & feels like daily
-      const tempChartDaily = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        tempChartDaily.push({
-          time: this.state.dailyCards[i].time.toString(),
-          temperature: parseInt(this.state.dailyCards[i].temperature),
-          min: parseInt(this.state.dailyCards[i].temperatureMin),
-          max: parseInt(this.state.dailyCards[i].temperatureMax),
-          feelsLike: parseInt(this.state.dailyCards[i].feelsLike)
-        }
-        )
-      }
-      this.setState({
-        tempChartDaily
-      })
-
-      //temperature range  + temp & feel daily
-      const allTempDaily = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        allTempDaily.push({
-          day: this.state.dailyCards[i].time.toString(),
-          temperature: parseInt(this.state.dailyCards[i].temperature),
-          feelsLike: parseInt(this.state.dailyCards[i].feelsLike),
-          range: [
-            parseInt(this.state.dailyCards[i].temperatureMin),
-            parseInt(this.state.dailyCards[i].temperatureMax)
-          ]
-        })
-      }
-      this.setState({
-        allTempDaily
-      })
-
-      //temperature range daily
-      const tempRangeDaily = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        tempRangeDaily.push({
-          day: this.state.dailyCards[i].time.toString(),
-          range: [
-            parseInt(this.state.dailyCards[i].temperatureMin),
-            parseInt(this.state.dailyCards[i].temperatureMax)
-          ]
-        })
-      }
-      this.setState({
-        tempRangeDaily
-      })
-
-      //humidity & pressure daily
-      const humidityAndPressureChartDaily = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        humidityAndPressureChartDaily.push({
-          time: this.state.dailyCards[i].time.toString(),
-          humidity: parseInt(this.state.dailyCards[i].humidity),
-          pressure: parseInt(this.state.dailyCards[i].pressure)
-        })
-      }
-      this.setState({
-        humidityAndPressureChartDaily
-      })
-
-      //wind & wind gusts daily
-      const windChartDaily = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        windChartDaily.push({
-          day: this.state.dailyCards[i].time.toString(),
-          wind: parseInt(this.state.dailyCards[i].windSpeed),
-          windGusts: parseInt(this.state.dailyCards[i].windGusts)
-        })
-      }
-      this.setState({
-        windChartDaily
-      })
-
-      //sky pie chart
-      const skyChartDaily = [];
-      const skyTypes = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        skyTypes.push(this.state.dailyCards[i].sky)
-      }
-      const skyTypecounts = {};
-      skyTypes.forEach((x) => {
-        skyTypecounts[x] = (skyTypecounts[x] || 0) + 1;
-      });
-      const skyTypesArray = (Object.keys(skyTypecounts));
-      const skyTypesNumbers = (Object.values(skyTypecounts));
-
-      for (let i = 0; i < skyTypesArray.length; i++) {
-        skyChartDaily.push({
-          sky: skyTypesArray[i],
-          value: skyTypesNumbers[i]
-        });
-      }
-
-      this.setState({
-        skyChartDaily
-      })
-
-      const RADIAN = Math.PI / 180;
-      const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-        return (
-          <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-            {`${(percent * 100).toFixed(0)}%`}
-          </text>
-        );
-      };
-
-      //precipitation probability daily chart
-      const precipProbChart = [];
-      for (let i = 0; i < this.state.dailyCards.length; i++) {
-        precipProbChart.push({
-          day: this.state.dailyCards[i].time,
-          probability: this.state.dailyCards[i].precProb * 100
-        });
-      }
-
-      this.setState({
-        precipProbChart
       })
 
       //setting up minute cards
@@ -424,9 +248,9 @@ export class Hourly extends React.Component {
     }
   }
 
-
-  getData = () => {
-
+  //setting up data for hourly charts
+  //temperature & feels like hourly
+  getTempChartHourly = () => {
     const tempChartHourly = [];
     for (let i = 0; i < this.state.hourlyCards.length; i++) {
       tempChartHourly.push({
@@ -437,7 +261,121 @@ export class Hourly extends React.Component {
       )
     }
     return tempChartHourly
+  }
 
+  //wind & wind gusts hourly
+  getWindChartHourly = () => {
+    const windChartHourly = [];
+    for (let i = 0; i < this.state.hourlyCards.length; i++) {
+      windChartHourly.push({
+        time: this.state.hourlyCards[i].time.toString(),
+        wind: parseInt(this.state.hourlyCards[i].windSpeed),
+        windGusts: parseInt(this.state.hourlyCards[i].windGusts)
+      })
+    }
+    return windChartHourly
+  }
+
+  //humidity & pressure
+  getHumidityAndPressureChartHourly = () => {
+    const humidityAndPressureChartHourly = [];
+    for (let i = 0; i < this.state.hourlyCards.length; i++) {
+      humidityAndPressureChartHourly.push({
+        time: this.state.hourlyCards[i].time.toString(),
+        humidity: parseInt(this.state.hourlyCards[i].humidity),
+        pressure: parseInt(this.state.hourlyCards[i].pressure)
+      })
+    }
+    return humidityAndPressureChartHourly
+  }
+
+
+  //setting up data for daily charts
+  //temperature & feels like daily
+  getTempChartDaily = () => {
+    const tempChartDaily = [];
+    for (let i = 0; i < this.state.dailyCards.length; i++) {
+      tempChartDaily.push({
+        time: this.state.dailyCards[i].time.toString(),
+        temperature: parseInt(this.state.dailyCards[i].temperature),
+        min: parseInt(this.state.dailyCards[i].temperatureMin),
+        max: parseInt(this.state.dailyCards[i].temperatureMax),
+        feelsLike: parseInt(this.state.dailyCards[i].feelsLike)
+      }
+      )
+    }
+    return tempChartDaily
+  }
+
+  //temperature range  + temp & feel daily
+  getAllTempDaily = () => {
+    const allTempDaily = [];
+    for (let i = 0; i < this.state.dailyCards.length; i++) {
+      allTempDaily.push({
+        day: this.state.dailyCards[i].time.toString(),
+        temperature: parseInt(this.state.dailyCards[i].temperature),
+        feelsLike: parseInt(this.state.dailyCards[i].feelsLike),
+        range: [
+          parseInt(this.state.dailyCards[i].temperatureMin),
+          parseInt(this.state.dailyCards[i].temperatureMax)
+        ]
+      })
+    }
+    return allTempDaily
+  }
+
+  //temperature range daily
+  // getTempRangeDaily = () => {
+  //   const tempRangeDaily = [];
+  //   for (let i = 0; i < this.state.dailyCards.length; i++) {
+  //     tempRangeDaily.push({
+  //       day: this.state.dailyCards[i].time.toString(),
+  //       range: [
+  //         parseInt(this.state.dailyCards[i].temperatureMin),
+  //         parseInt(this.state.dailyCards[i].temperatureMax)
+  //       ]
+  //     })
+  //   }
+  // return tempRangeDaily
+  // }
+
+  //humidity & pressure daily
+  getHumidityAndPressureChartDaily = () => {
+    const humidityAndPressureChartDaily = [];
+    for (let i = 0; i < this.state.dailyCards.length; i++) {
+      humidityAndPressureChartDaily.push({
+        time: this.state.dailyCards[i].time.toString(),
+        humidity: parseInt(this.state.dailyCards[i].humidity),
+        pressure: parseInt(this.state.dailyCards[i].pressure)
+      })
+    }
+    return humidityAndPressureChartDaily
+  }
+
+  //wind & wind gusts daily
+  getWindChartDaily = () => {
+    const windChartDaily = [];
+    for (let i = 0; i < this.state.dailyCards.length; i++) {
+      windChartDaily.push({
+        day: this.state.dailyCards[i].time.toString(),
+        wind: parseInt(this.state.dailyCards[i].windSpeed),
+        windGusts: parseInt(this.state.dailyCards[i].windGusts)
+      })
+    }
+    return windChartDaily
+
+  }
+
+  //precipitation probability daily chart
+  getPrecipProbChart = () => {
+    const precipProbChart = [];
+    for (let i = 0; i < this.state.dailyCards.length; i++) {
+      precipProbChart.push({
+        day: this.state.dailyCards[i].time,
+        probability: this.state.dailyCards[i].precProb * 100
+      });
+    }
+    return precipProbChart
   }
 
   render() {
@@ -448,8 +386,7 @@ export class Hourly extends React.Component {
     // console.log('h/d', this.state.hourly)
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
-    console.log(this.state.tempChartHourly);
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    // console.log(this.state.tempChartHourly);
 
 
     return (
@@ -523,7 +460,7 @@ export class Hourly extends React.Component {
                       width={600}
                       height={250}
                       // data={this.state.tempChartHourly}
-                      data={this.getData()}
+                      data={this.getTempChartHourly()}
                     >
                       <XAxis dataKey="time" />
                       <YAxis />
@@ -553,7 +490,7 @@ export class Hourly extends React.Component {
                       chartType="LineChart"
                       width={600}
                       height={250}
-                      data={this.state.windChartHourly}
+                      data={this.getWindChartHourly()}
                     >
                       <XAxis dataKey="time" />
                       <YAxis />
@@ -583,7 +520,7 @@ export class Hourly extends React.Component {
                       chartType="LineChart"
                       width={600}
                       height={250}
-                      data={this.state.humidityAndPressureChartHourly}
+                      data={this.getHumidityAndPressureChartHourly()}
                     >
                       <XAxis dataKey="time" />
                       <YAxis yAxisId="left"
@@ -648,52 +585,11 @@ export class Hourly extends React.Component {
                   </div>
                 </div>
                 <div className='charts'>
-                  {/* <p>Temperature & feel</p>
-                  <ResponsiveContainer
-                    width='100%'
-                    height={250}>
-                    <LineChart
-                      chartType="LineChart"
-                      width={600}
-                      height={250}
-                      data={this.state.tempChartDaily}
-                    >
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <Legend
-                        layout='vertical'
-                        align='center'
-                        verticalAlign='top'
-                      />
-                      <Tooltip />
-                      <Line type="monotone"
-                        dataKey="temperature"
-                        stroke="var(--primary-color)"
-                        dot={false}
-                      />
-                      <Line type="monotone"
-                        dataKey="feelsLike"
-                        stroke="var(--text-color)"
-                        dot={false}
-                      />
-                      <Line type="monotone"
-                        dataKey="min"
-                        stroke="blue"
-                        dot={false}
-                      />
-                      <Line type="monotone"
-                        dataKey="max"
-                        stroke="red"
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer> */}
-
                   <p>Daily temperature range, average & feel</p>
                   <ResponsiveContainer
                     width='100%'
                     height={250}>
-                    <ComposedChart width={730} height={250} data={this.state.allTempDaily}>
+                    <ComposedChart width={730} height={250} data={this.getAllTempDaily()}>
                       <XAxis dataKey="day" />
                       <YAxis />
                       <Tooltip />
@@ -722,7 +618,7 @@ export class Hourly extends React.Component {
                   <ResponsiveContainer
                     width='100%'
                     height={250}>
-                    <BarChart width={600} height={250} data={this.state.precipProbChart}>
+                    <BarChart width={600} height={250} data={this.getPrecipProbChart()}>
                       <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
                       <XAxis dataKey="day" />
                       <YAxis />
@@ -743,7 +639,7 @@ export class Hourly extends React.Component {
                       chartType="LineChart"
                       width={600}
                       height={250}
-                      data={this.state.humidityAndPressureChartDaily}
+                      data={this.getHumidityAndPressureChartDaily()}
                     >
                       <XAxis dataKey="time" />
                       <YAxis yAxisId="left"
@@ -780,7 +676,7 @@ export class Hourly extends React.Component {
                       chartType="LineChart"
                       width={600}
                       height={250}
-                      data={this.state.windChartDaily}
+                      data={this.getWindChartDaily()}
                     >
                       <XAxis dataKey="day" />
                       <YAxis />
@@ -802,47 +698,6 @@ export class Hourly extends React.Component {
                       />
                     </LineChart>
                   </ResponsiveContainer>
-
-
-                  {/* <p>Daily temperature range</p>
-                  <ResponsiveContainer
-                    width='100%'
-                    height={250}>
-                    <BarChart width={730} height={250} data={this.state.tempRangeDaily}>
-                      <XAxis dataKey="day" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="range" fill="var(--card-background)" />
-                    </BarChart>
-                  </ResponsiveContainer> */}
-
-
-                  {/* <p>Sky</p>
-                  <ResponsiveContainer
-                    width='100%'
-                    height={250}>
-                    <PieChart width={400} height={400}>
-                      <Pie
-                        data={this.state.skyChartDaily}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        // label={renderCustomizedLabel}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {this.state.skyChartDaily.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Legend
-                        layout='vertical'
-                        align='center'
-                        verticalAlign='top'
-                      />
-                    </PieChart>
-                  </ResponsiveContainer> */}
                 </div>
               </div>
             }
