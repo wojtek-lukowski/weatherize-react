@@ -549,7 +549,7 @@ export class Hourly extends React.Component {
                     width='100%'
                     height={250}>
                     <ComposedChart width={730} height={250} data={this.getAllTempDaily()}>
-                      <XAxis dataKey="day" />
+                      <XAxis dataKey="time" />
                       <YAxis />
                       <Tooltip />
                       <Legend
@@ -579,7 +579,7 @@ export class Hourly extends React.Component {
                     height={250}>
                     <BarChart width={600} height={250} data={this.getPrecipProbChart()}>
                       <Bar dataKey="probability" fill="var(--primary-color)" background={{ fill: 'var(--card-background)' }} />
-                      <XAxis dataKey="day" />
+                      <XAxis dataKey="time" />
                       <YAxis />
                       <Tooltip />
                       {/* <Legend
@@ -637,7 +637,7 @@ export class Hourly extends React.Component {
                       height={250}
                       data={this.getWindChartDaily()}
                     >
-                      <XAxis dataKey="day" />
+                      <XAxis dataKey="time" />
                       <YAxis />
                       <Legend
                         layout='vertical'
