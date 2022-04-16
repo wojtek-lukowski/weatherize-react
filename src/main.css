@@ -103,7 +103,6 @@ li span {
 
 .current-location-card {
   width: var(--column10);
-  margin: var(--gap) auto;
   margin: var(--gap0-5) auto;
   border-radius: var(--border-radius);
   background-color: var(--card-background);
