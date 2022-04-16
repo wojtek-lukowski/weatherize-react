@@ -128,9 +128,6 @@ export class Hourly extends React.Component {
       const copy = [...days];
       const part1 = copy.splice(indexOfToday).concat(days);
       if (copy[0] === 'Sun') { part1.push('Sun') };
-      // part1[0] = 'Today';
-
-      console.log(copy, part1);
 
       for (let i = 0; i < data.daily.length; i++) {
 
