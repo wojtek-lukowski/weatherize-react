@@ -10,17 +10,15 @@ function Favorites() {
   const [favorites, setFavorites] = useState(['Warszawa', 'Tokyo', 'Singapore', 'Malaga']);
 
   return (
-    <div className="favs">
+    <div className="favs-section">
       <p className='grey'>Favorites</p>
       {favorites.map(city =>
-        <div key={city}>
-          {/* <Link to={{
-            pathname: `/favorite/${city}`,
-            city
-          }}> */}
-          <LocationCard city={city} />
-          {/* </Link> */}
-        </div>
+        // <Link to={{
+        //   pathname: `/favorite/${city}`,
+        //   city
+        // }}>
+        <LocationCard city={city} />
+        // </Link>
       )}
     </div>
   );

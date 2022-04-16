@@ -104,6 +104,7 @@ li span {
 .current-location-card {
   width: var(--column10);
   margin: var(--gap) auto;
+  margin: var(--gap0-5) auto;
   border-radius: var(--border-radius);
   background-color: var(--card-background);
   color: var(--white);
@@ -152,9 +153,22 @@ h2.location span {
   margin-bottom: 0;
 }
 
-.favs {
+.favs-section {
   color: var(--text-color);
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--gap); */
+}
+
+.favs {
+  margin-top: 0;
+  margin-bottom: 0;
+  /* color: var(--text-color);
+  overflow-y: scroll; */
+  /* display: flex;
+  flex-direction: column; */
+  /* gap: var(--gap); */
 }
 
 .hourly-cards-container {
@@ -422,10 +436,4 @@ h2.location span {
   .back-button-container {
     justify-content: center;
   }
-}
-
-.favs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
 }

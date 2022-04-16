@@ -66,8 +66,6 @@ export class LocationCard extends React.Component {
       this.setState({
         windDirection: windD
       })
-
-
     } catch (err) {
       console.log(err);
     }
@@ -76,16 +74,11 @@ export class LocationCard extends React.Component {
   render() {
 
     return (
-      // <div>{this.props.city}</div>
       <div className='favs'>
         {
           this.state.location &&
           <div className='current-location-card'>
             <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
-            {/* <div className='main-data'>
-            <p className="temperature">{this.state.temperature} C°</p>
-            <p className='sky'>{this.state.sky}</p>
-          </div> */}
             <ul>
               <li className="temperature">{this.state.temperature} C°</li>
               <li className='sky'>{this.state.sky}</li>
