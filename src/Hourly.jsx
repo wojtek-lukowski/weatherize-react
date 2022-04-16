@@ -281,28 +281,12 @@ export class Hourly extends React.Component {
 
 
   //setting up data for daily charts
-  //temperature & feels like daily
-  getTempChartDaily = () => {
-    const tempChartDaily = [];
-    for (let i = 0; i < this.state.dailyCards.length; i++) {
-      tempChartDaily.push({
-        time: this.state.dailyCards[i].time.toString(),
-        temperature: parseInt(this.state.dailyCards[i].temperature),
-        min: parseInt(this.state.dailyCards[i].temperatureMin),
-        max: parseInt(this.state.dailyCards[i].temperatureMax),
-        feelsLike: parseInt(this.state.dailyCards[i].feelsLike)
-      }
-      )
-    }
-    return tempChartDaily
-  }
-
   //temperature range  + temp & feel daily
   getAllTempDaily = () => {
     const allTempDaily = [];
     for (let i = 0; i < this.state.dailyCards.length; i++) {
       allTempDaily.push({
-        day: this.state.dailyCards[i].time.toString(),
+        time: this.state.dailyCards[i].time,
         temperature: parseInt(this.state.dailyCards[i].temperature),
         feelsLike: parseInt(this.state.dailyCards[i].feelsLike),
         range: [
@@ -314,27 +298,12 @@ export class Hourly extends React.Component {
     return allTempDaily
   }
 
-  //temperature range daily
-  // getTempRangeDaily = () => {
-  //   const tempRangeDaily = [];
-  //   for (let i = 0; i < this.state.dailyCards.length; i++) {
-  //     tempRangeDaily.push({
-  //       day: this.state.dailyCards[i].time.toString(),
-  //       range: [
-  //         parseInt(this.state.dailyCards[i].temperatureMin),
-  //         parseInt(this.state.dailyCards[i].temperatureMax)
-  //       ]
-  //     })
-  //   }
-  // return tempRangeDaily
-  // }
-
   //humidity & pressure daily
   getHumidityAndPressureChartDaily = () => {
     const humidityAndPressureChartDaily = [];
     for (let i = 0; i < this.state.dailyCards.length; i++) {
       humidityAndPressureChartDaily.push({
-        time: this.state.dailyCards[i].time.toString(),
+        time: this.state.dailyCards[i].time,
         humidity: parseInt(this.state.dailyCards[i].humidity),
         pressure: parseInt(this.state.dailyCards[i].pressure)
       })
@@ -347,13 +316,12 @@ export class Hourly extends React.Component {
     const windChartDaily = [];
     for (let i = 0; i < this.state.dailyCards.length; i++) {
       windChartDaily.push({
-        day: this.state.dailyCards[i].time.toString(),
+        time: this.state.dailyCards[i].time,
         wind: parseInt(this.state.dailyCards[i].windSpeed),
         windGusts: parseInt(this.state.dailyCards[i].windGusts)
       })
     }
     return windChartDaily
-
   }
 
   //precipitation probability daily chart
@@ -361,7 +329,7 @@ export class Hourly extends React.Component {
     const precipProbChart = [];
     for (let i = 0; i < this.state.dailyCards.length; i++) {
       precipProbChart.push({
-        day: this.state.dailyCards[i].time,
+        time: this.state.dailyCards[i].time,
         probability: this.state.dailyCards[i].precProb * 100
       });
     }
@@ -377,6 +345,7 @@ export class Hourly extends React.Component {
     // console.log('rainIn', this.state.rainIn);
     // console.log(this.state.skyChartDaily);
     // console.log(this.state.tempChartHourly);
+    // console.log(this.state.dailyCards[0].time.toString());
 
 
     return (
