@@ -42,12 +42,12 @@ function Registration() {
         </input>
         <input placeholder='Email' type='email' value={email} onChange={e => setEmail(e.target.value)}>
         </input>
-        <button type='submit' onClick={e => handleRegister(e)}>Create Account</button>
+        <button type='submit' className='button-primary' onClick={e => handleRegister(e)}>Create Account</button>
       </form>
       <nav>
-        <Link to='/'>Home</Link>
+        <Link to='/' className='button-primary'>Home</Link>
         <br></br>
-        <Link to='/login'>Login</Link>
+        <Link to='/login' className='button-primary'>Login</Link>
       </nav>
     </div>
   );

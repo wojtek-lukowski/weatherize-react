@@ -14,21 +14,31 @@ function App() {
   const [token, setToken] = useState('');
 
   const saveUser = (username, token) => {
-    console.log('saving to local storage');
-    localStorage.setItem('weatherize-username', username)
-    localStorage.setItem('weatherize-token', token)
+    const usernameStorage = localStorage.getItem('weatherize-username')
+    const tokenStorage = localStorage.getItem('weatherize-token')
+    // console.log('retrieved', usernameStorage, tokenStorage);
     setUser(username)
     setToken(token)
+  }
+  
+  const logOut = () => {
+    setUser(null);
+    setToken(null)
+    localStorage.removeItem('weatherize-username')
+    localStorage.removeItem('weatherize-token')
   }
 
   return (
     <div className="App">
       <h1>Weatherize</h1>
+      {user && 
+      <h4>Welcome {user}</h4>
+      }
       <Router
       // basename={'/weatherize-react'}
       >
         <Routes>
-      <Route exact path='/' element={ <Dashboard user={user} token={token}/> }></Route>
+      <Route exact path='/' element={ <Dashboard user={user} token={token}logOut={logOut}/> }></Route>
       <Route exact path='/hourly' element={ <Hourly /> }></Route>
       <Route exact path='/login' element={ <Login saveUser={saveUser}/> }></Route>
       <Route exact path='/register' element={ <Registration /> }></Route>

@@ -64,7 +64,7 @@ export class FavsHourly extends React.Component {
 
   async componentDidMount() {
     console.clear();
-    console.log('favorite hourly props', this.props.city);
+    console.log('favorite hourly props', this.props);
     const url = window.location.href;
     const city = url.split('/').at(-1);
 

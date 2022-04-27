@@ -34,6 +34,29 @@ nav {
   margin: var(--gap2) auto;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap3);
+  max-width: var(--column10);
+  margin: 3rem auto 10rem;
+}
+
+input {
+  width: var(--column5);
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--text-color);
+  text-decoration: none;
+  padding: var(--gap1-5);
+}
+
+input:focus {
+  color: var(--primary-color);
+}
+
 .content {
   max-width: var(--column12);
   margin: auto;

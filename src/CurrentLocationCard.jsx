@@ -22,7 +22,6 @@ export class CurrentLocationCard extends React.Component {
   }
 
   async componentDidMount() {
-    localStorage.clear();
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.getWeather(position.coords.latitude, position.coords.longitude);

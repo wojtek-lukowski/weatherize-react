@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { config } from './config';
+import Loading from './Loading';
 import axios from 'axios';
 const key = config.API_KEY;
 
@@ -8,6 +9,7 @@ function Login(props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLogging, setIsLogging] = useState(false);
 
   console.log(props);
 
@@ -15,6 +17,7 @@ function Login(props) {
     console.log(username, 'is loggin in');
 
     e.preventDefault();
+    setIsLogging(true);
 
     axios.post('https://weatherize-app.herokuapp.com/login/', {
       username,
@@ -25,7 +28,10 @@ function Login(props) {
         console.log(data);
         console.log(data.token);
         console.log(data.user.username);
+        localStorage.setItem('weatherize-username', data.user.username)
+        localStorage.setItem('weatherize-token', data.token)
         props.saveUser(data.user.username, data.token);
+        setIsLogging(false);
         // window.open('/', '_self');
       })
       .catch(error => {
@@ -57,15 +63,19 @@ function Login(props) {
         </input>
         <input placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)}>
         </input>
-        <button
-          type='submit'
-          onClick={e => handleLogin(e)}
-        >Log in</button>
+        {isLogging ?
+          <button className='button-primary'><Loading /></button> :
+          <button
+            className='button-primary'
+            type='submit'
+            onClick={e => handleLogin(e)}
+          >Log in</button>
+        }
       </form>
       <nav>
-        <Link to='/'>Home</Link>
+        <Link to='/' className='button-primary'>Home</Link>
         <br></br>
-        <Link to='/register'>Create Account</Link>
+        <Link to='/register' className='button-primary'>Create Account</Link>
       </nav>
     </div>
   );

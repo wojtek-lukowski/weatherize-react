@@ -15,8 +15,11 @@ function Favorites(props) {
   // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY1NDk1NDkyMzVkYWJiOGYyYmM0NmUiLCJ1c2VybmFtZSI6IndvanRlayIsInBhc3N3b3JkIjoiJDJiJDEwJGZIakdjWk9HVUd5NTBWc1E5WWZOVHVacE9rdXA3WFJqdVBTOGo2dGNvL24xWHZJT1BocFp5IiwiZW1haWwiOiJ3b2p0ZWtAZ21haWwuY29tIiwiZmF2b3JpdGVzIjpbIkhlbHNpbmtpIiwiU2luZ2Fwb3JlIiwiV2Fyc3phd2EiLCJNYWxhZ2EiXSwiX192IjowLCJpYXQiOjE2NTA4ODgzMjgsImV4cCI6MTY1MTQ5MzEyOCwic3ViIjoid29qdGVrIn0.d3HngDKgeNIdEKozkf2MGGrm8BUvgLLQWVSUnxv4sN4';
 
   useEffect(() => {
-    const user = props.user;
-    const token = props.token;
+    const token = localStorage.getItem('weatherize-token');
+    const user = localStorage.getItem('weatherize-username');
+    console.log('favorites retrieved: ', user, token);
+    // const user = props.user;
+    // const token = props.token;
     axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
@@ -31,34 +34,20 @@ function Favorites(props) {
       })
   }, [])
 
-
-  //test
-  // function getAll() {
-  //   console.log('geting all users');
-  //   axios.get(`https://weatherize-app.herokuapp.com/users/`,
-  //     { headers: { Authorization: `Bearer ${token}` } })
-  //     .then(response => {
-  //       const data = response.data;
-  //       console.log(data);
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error);
-  //       // window.open('/', '_self');
-  //     })
-  // }
-
-
   return (
     <div>
       <p className='grey'>Favorites</p>
       <div className="favs-section">
         {favorites.map(city =>
-          // <Link to={{
-          //   pathname: `/favorite/${city}`,
-          //   city
-          // }}>
-          <LocationCard city={city} />
-          // </Link>
+          <Link to={{
+            pathname: `/favorite/${city}`,
+            city,
+            fromFavorites: true
+          }}>
+            <LocationCard
+              city={city}
+            />
+          </Link>
         )}
       </div>
     </div>
