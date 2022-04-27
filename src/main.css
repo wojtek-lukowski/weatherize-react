@@ -31,7 +31,7 @@ nav {
   display: flex;
   justify-content: space-evenly;
   max-width: var(--column12);
-  margin: var(--gap2) auto;
+  margin: var(--gap6) auto;
 }
 
 form {
@@ -76,6 +76,17 @@ input:focus {
   cursor: pointer;
   border-radius: var(--border-radius);
   border: 1px solid var(--primary-color);
+}
+
+.remove {
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.remove:hover {
+  color: var(--white);
+  border: 1px solid var(--red);
+  background-color: var(--red);
 }
 
 .button-toggle {
@@ -291,6 +302,8 @@ h2.location span {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap3);
+  max-width: var(--column8);
+  margin: auto;
 }
 
 .charts:nth-of-type(2) {
@@ -457,5 +470,9 @@ h2.location span {
 
   .back-button-container {
     justify-content: center;
+  }
+
+  .charts {
+    max-width: 100%;
   }
 }

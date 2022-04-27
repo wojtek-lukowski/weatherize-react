@@ -12,13 +12,21 @@ function App() {
 
   const [user, setUser] = useState('');
   const [token, setToken] = useState('');
+  
+  // useEffect(() => {
+  //   const usernameStorage = localStorage.getItem('weatherize-username')
+  //   const tokenStorage = localStorage.getItem('weatherize-token')
+  //   // console.log('retrieved', usernameStorage, tokenStorage);
+  //   setUser(username)
+  //   setToken(token)
+  // })
 
   const saveUser = (username, token) => {
     const usernameStorage = localStorage.getItem('weatherize-username')
     const tokenStorage = localStorage.getItem('weatherize-token')
     // console.log('retrieved', usernameStorage, tokenStorage);
-    setUser(username)
-    setToken(token)
+    setUser(usernameStorage)
+    setToken(tokenStorage)
   }
   
   const logOut = () => {
@@ -42,7 +50,7 @@ function App() {
       <Route exact path='/hourly' element={ <Hourly /> }></Route>
       <Route exact path='/login' element={ <Login saveUser={saveUser}/> }></Route>
       <Route exact path='/register' element={ <Registration /> }></Route>
-      <Route exact path='/favorite/:city' element={ <FavsHourly /> }></Route>
+      <Route exact path='/:city' element={ <FavsHourly /> }></Route>
         </Routes>
       </Router>
     </div>

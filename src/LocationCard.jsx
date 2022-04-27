@@ -23,7 +23,7 @@ export class LocationCard extends React.Component {
   }
 
   componentDidMount() {
-    console.log('location card props', this.props);
+    // console.log('location card props', this.props);
     this.weatherCity(this.props.city);
   }
 
