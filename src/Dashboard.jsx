@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Router, Routes, Link } from 'react-router-dom';
 import { config } from './config';
 import Favorites from './Favorites';
+import Search from './Search';
 import axios from "axios";
 const key = config.API_KEY;
 
@@ -62,10 +63,10 @@ function Dashboard(props) {
   return (
 
     <div className="App content">
+      <Search />
       <Link to='/hourly' className="card">
         <CurrentLocationCard />
       </Link>
-      <br></br>
       {user &&
         <Favorites user={props.user} token={props.token} />
       }

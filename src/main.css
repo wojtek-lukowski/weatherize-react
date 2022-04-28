@@ -24,7 +24,7 @@ a {
   text-align: left;
   margin-left: calc(var(--column2) + var(--page-padding));
   margin-left: calc(var(--page-padding));
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
 }
 
 nav {
@@ -40,7 +40,7 @@ form {
   align-items: center;
   gap: var(--gap3);
   max-width: var(--column10);
-  margin: 3rem auto 10rem;
+  margin: 2rem auto;
 }
 
 input {
@@ -55,6 +55,10 @@ input {
 
 input:focus {
   color: var(--primary-color);
+}
+
+.search-component {
+  margin-bottom: 1.6rem;
 }
 
 .content {
@@ -308,6 +312,17 @@ h2.location span {
 
 .charts:nth-of-type(2) {
   margin-top: 5rem;
+}
+
+.search {
+  padding: var(--gap4);
+  display: flex;
+  gap: var(--gap3);
+  justify-content: center;
+}
+
+.loading {
+  color: var(--primary-color);
 }
 
 .loading-dot {

@@ -64,7 +64,7 @@ function Login(props) {
         <input placeholder='Password' type='password' value={password} onChange={e => setPassword(e.target.value)}>
         </input>
         {isLogging ?
-          <button className='button-primary'><Loading /></button> :
+          <button className='button-primary loading'>Loggin in...</button> :
           <button
             className='button-primary'
             type='submit'
