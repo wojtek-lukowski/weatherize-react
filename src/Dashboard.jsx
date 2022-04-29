@@ -51,7 +51,7 @@ function Dashboard(props) {
     axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
-        setFavorites(response.data.favorites.reverse())
+        setFavorites(response.data.favorites)
         console.log(response.data.favorites);
       })
       .catch(error => {

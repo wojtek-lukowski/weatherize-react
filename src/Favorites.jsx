@@ -17,7 +17,7 @@ function Favorites(props) {
     <div>
       <p className='grey'>Favorites</p>
       <div className="favs-section">
-        {props.favorites.map(city =>
+        {props.favorites.reverse().map(city =>
           // <Link to={{
           //   pathname: `/${city}`,
           //   city,
