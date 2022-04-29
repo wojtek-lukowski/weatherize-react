@@ -126,7 +126,7 @@ export class CurrentLocationCard extends React.Component {
       const data = await axios.post(`https://weatherize-app.herokuapp.com/users/${user}/${city}`, {},
         { headers: { Authorization: `Bearer ${token}` } })
       console.log('add confirmation:', data);
-      this.getFavs();
+      this.getFavs(city);
       this.setState({ favsManipulation: false });
       this.props.refreshFavs();
     } catch (error) {
@@ -144,7 +144,7 @@ export class CurrentLocationCard extends React.Component {
       const data = await axios.delete(`https://weatherize-app.herokuapp.com/users/${user}/${city}`,
         { headers: { Authorization: `Bearer ${token}` } })
       console.log('remove confirmation:', data);
-      this.getFavs();
+      this.getFavs(city);
       this.setState({ favsManipulation: false });
       this.props.refreshFavs();
     } catch (error) {

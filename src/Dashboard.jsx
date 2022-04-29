@@ -22,7 +22,8 @@ function Dashboard(props) {
     setUser(null);
     localStorage.removeItem('weatherize-username')
     localStorage.removeItem('weatherize-token')
-    window.open('/', '_self');
+    // window.open('/', '_self');
+    window.open('//weatherize-react', '_self');
   }
 
   const removeUser = () => {
@@ -35,7 +36,8 @@ function Dashboard(props) {
         console.log(data);
         logOut();
         alert(user + ' has been removed');
-        window.open('/', '_self');
+        // window.open('/', '_self');
+        window.open('//weatherize-react', '_self');
       })
       .catch(error => {
         console.log('error', error);
@@ -85,7 +87,7 @@ function Dashboard(props) {
       <CurrentLocationCard
         favorites={favorites}
         getFavs={getFavs}
-      // refreshFavs={refreshFavs}
+        refreshFavs={refreshFavs}
       />
       {/* </Link> */}
       {user &&
