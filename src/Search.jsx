@@ -22,8 +22,8 @@ function Search(props) {
   const [cityCompleted, setCityCompleted] = useState(false);
   const [isInFavs, setIsInFavs] = useState();
   const [favorites, setFavorites] = useState([]);
-
   const [favsManipulation, setFavsManipulation] = useState(false);
+  const maxFavsNumber = 5;
 
   useEffect(() => {
     setFavorites(props.favorites);
@@ -108,6 +108,9 @@ function Search(props) {
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
     console.log('adding to favs:', city);
+    if (favorites.length >= maxFavsNumber) {
+      removeFromFavs(favorites[0])
+    }
     axios.post(`https://weatherize-app.herokuapp.com/users/${user}/${city}`, {},
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {

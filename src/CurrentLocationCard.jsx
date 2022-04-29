@@ -114,12 +114,14 @@ export class CurrentLocationCard extends React.Component {
   }
 
   async addToFavs(city) {
+    const maxFavsNumber = 5;
     this.setState({ favsManipulation: true });
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
     console.log('adding to favs:', city);
-    // console.log('user', user);
-    // console.log('token', token);
+    if (this.props.favorites.length >= maxFavsNumber) {
+      this.removeFromFavs(this.props.favorites[0])
+    }
     try {
       const data = await axios.post(`https://weatherize-app.herokuapp.com/users/${user}/${city}`, {},
         { headers: { Authorization: `Bearer ${token}` } })
