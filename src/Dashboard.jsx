@@ -22,8 +22,8 @@ function Dashboard(props) {
     setUser(null);
     localStorage.removeItem('weatherize-username')
     localStorage.removeItem('weatherize-token')
-    // window.open('/', '_self');
-    window.open('//weatherize-react', '_self');
+    window.open('/', '_self');
+    // window.open('/weatherize-react/', '_self');
   }
 
   const removeUser = () => {
@@ -37,7 +37,7 @@ function Dashboard(props) {
         logOut();
         alert(user + ' has been removed');
         // window.open('/', '_self');
-        window.open('//weatherize-react', '_self');
+        window.open('/weatherize-react', '_self');
       })
       .catch(error => {
         console.log('error', error);
@@ -51,7 +51,7 @@ function Dashboard(props) {
     axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
-        setFavorites(response.data.favorites)
+        setFavorites(response.data.favorites.reverse())
         console.log(response.data.favorites);
       })
       .catch(error => {
