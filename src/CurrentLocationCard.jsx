@@ -1,6 +1,8 @@
 import React from 'react';
 import { config } from './config';
-import Loading from './Loading'
+import { Link } from 'react-router-dom';
+import Loading from './Loading';
+import axios from 'axios';
 const key = config.API_KEY;
 export class CurrentLocationCard extends React.Component {
 
@@ -17,11 +19,17 @@ export class CurrentLocationCard extends React.Component {
       sky: '',
       windSpeed: '',
       windDirection: '',
-      loading: true
+      loading: true,
+      isInFavs: false,
+      favsManipulation: false
+      // favorites: []
     }
   }
 
   async componentDidMount() {
+    console.log('current init favs', this.state.favorites);
+    console.log('current init props favs', this.props.favorites);
+    // this.setState({ favorites: this.props.favorites })
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.getWeather(position.coords.latitude, position.coords.longitude);
@@ -38,7 +46,7 @@ export class CurrentLocationCard extends React.Component {
       const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
       console.log(data);
-
+      this.getFavs(data.name);
       this.setState({
         location: data.name,
         country: data.sys.country,
@@ -84,22 +92,127 @@ export class CurrentLocationCard extends React.Component {
     })
   };
 
+  async getFavs(city) {
+    const token = localStorage.getItem('weatherize-token');
+    const user = localStorage.getItem('weatherize-username');
+    try {
+      const data = await axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
+        { headers: { Authorization: `Bearer ${token}` } })
+      // this.setState({
+      //   favorites: data.data.favorites
+      // })
+      if (data.data.favorites.includes(city)) {
+        this.setState({
+          isInFavs: true
+        })
+      }
+      console.log(data.data.favorites);
+    } catch (error) {
+      console.log('error', error);
+    }
+    this.props.getFavs();
+  }
+
+  async addToFavs(city) {
+    this.setState({ favsManipulation: true });
+    const token = localStorage.getItem('weatherize-token');
+    const user = localStorage.getItem('weatherize-username');
+    console.log('adding to favs:', city);
+    // console.log('user', user);
+    // console.log('token', token);
+    try {
+      const data = await axios.post(`https://weatherize-app.herokuapp.com/users/${user}/${city}`, {},
+        { headers: { Authorization: `Bearer ${token}` } })
+      console.log('add confirmation:', data);
+      this.getFavs();
+      this.setState({ favsManipulation: false });
+      this.props.refreshFavs();
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
+  async removeFromFavs(city) {
+    this.setState({ favsManipulation: true });
+    console.log('removing from favs:', city);
+    const token = localStorage.getItem('weatherize-token');
+    const user = localStorage.getItem('weatherize-username');
+    console.log(token);
+    try {
+      const data = await axios.delete(`https://weatherize-app.herokuapp.com/users/${user}/${city}`,
+        { headers: { Authorization: `Bearer ${token}` } })
+      console.log('remove confirmation:', data);
+      this.getFavs();
+      this.setState({ favsManipulation: false });
+      this.props.refreshFavs();
+    } catch (error) {
+      console.log('error', error);
+    }
+    // this.getFavs(city);
+  }
+
   render() {
 
     return (
       <div className='content'>
         {this.state.loading ?
-          // <div className='grey'>Loading your current location</div> :
           <Loading /> :
           <div className='grey'>Your current location</div>
         }
         {this.state.location &&
           <div className='current-location-card current'>
-            <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
-            {/* <div className='main-data'>
-              <p className="temperature">{this.state.temperature} C°</p>
-              <p className='sky'>{this.state.sky}</p>
-            </div> */}
+            <div className='card-header'>
+              <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
+              {/* {this.state.isInFavs ?
+                <svg
+                  onClick={() => {
+                    this.setState({ isInFavs: false })
+                    this.removeFromFavs(this.state.location);
+                  }}
+                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                :
+                <svg
+                  onClick={() => {
+                    this.setState({ isInFavs: true })
+                    this.addToFavs(this.state.location);
+                  }}
+                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              } */}
+              {this.state.isInFavs && !this.state.favsManipulation &&
+                <svg
+                  onClick={() => {
+                    this.setState({ isInFavs: false })
+                    this.removeFromFavs(this.state.location);
+                  }} width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              }
+              {this.state.isInFavs && this.state.favsManipulation &&
+                <svg className='confirmation'
+                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              }
+              {!this.state.isInFavs && !this.state.favsManipulation &&
+                <svg onClick={() => {
+                  this.setState({ isInFavs: true })
+                  this.addToFavs(this.state.location);
+                }}
+                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              }
+              {!this.state.isInFavs && this.state.favsManipulation &&
+                <svg className='confirmation'
+                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              }
+            </div>
             <ul>
               <li className="temperature">{this.state.temperature} C°</li>
               <li className='sky'>{this.state.sky}</li>
@@ -107,20 +220,12 @@ export class CurrentLocationCard extends React.Component {
               <li>{this.state.tempMin} C°<span>min</span></li>
               <li>{this.state.tempMax} C°<span>max</span></li>
               <li>{this.state.windSpeed} m/s {this.state.windDirection}<span>wind</span></li>
-              {/* <li><svg
-                style={{ tansform: [{ rotate: this.state.windDirection }] }}
-                width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_201_2)">
-                  <path d="M28.9651 51.7957C30.6225 51.7981 30.6319 50.2269 32.0307 46.2565C35.774 35.6355 41.2995 16.126 41.2995 16.126L29.0065 25.3217L16.7389 16.0916C16.7389 16.0916 22.2047 35.6171 25.9156 46.2447C27.3042 50.2207 27.309 51.7919 28.9651 51.7957V51.7957ZM28.7876 46.4511L22.1337 24.1449L29.5018 29.9455L28.7876 46.4511Z" fill="white" />
-                </g>
-                <defs>
-                  <clipPath id="clip0_201_2">
-                    <rect width="40" height="40" fill="white" transform="translate(57.2842 29.0413) rotate(135.084)" />
-                  </clipPath>
-                </defs>
-              </svg>
-              </li> */}
             </ul>
+            <Link to={{
+              pathname: `/hourly`
+            }}>
+              <p className='more'>more</p>
+            </Link>
           </div>
         }
       </div>

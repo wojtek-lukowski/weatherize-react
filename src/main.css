@@ -141,7 +141,7 @@ li span {
 
 .current-location-card {
   width: var(--column10);
-  margin: var(--gap0-5) auto 0;
+  margin: 0 auto;
   border-radius: var(--border-radius);
   background-color: var(--card-background);
   color: var(--white);
@@ -149,9 +149,14 @@ li span {
   border: 1px solid var(--card-background);
 }
 
-.current:hover {
+/* .current:hover {
   border: 1px solid var(--primary-color);
-  /* transform: translate(0, -3px); */
+  transform: translate(0, -3px);
+} */
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 h2.location {
@@ -159,6 +164,7 @@ h2.location {
   font-weight: bold;
   margin-top: 0;
   text-align: left;
+  display: inline-block;
 }
 
 h2.location span {
@@ -247,6 +253,11 @@ h2.location span {
   justify-content: left;
 }
 
+.hourly-header {
+  display: flex;
+  justify-content: left;
+}
+
 .fixed {
   position: absolute;
   left: var(--page-padding);
@@ -290,6 +301,18 @@ h2.location span {
   color: var(--white);
   padding: var(--gap2);
   border-top: 3px solid var(--primary-color);
+}
+
+.more {
+  margin: 0;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.3rem;
+  text-align: right;
+}
+
+.more:hover {
+  color: var(--primary-color);
 }
 
 .daily li {
@@ -464,6 +487,34 @@ h2.location span {
   100% {
     background-color: var(--text-color);
     transform: scale(100%);
+  }
+}
+
+.confirmation {
+  animation: heart;
+  animation-duration: .3s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+@keyframes heart {
+  0% {
+    transform: scale(100%);
+    opacity: 100%;
+    /* transform: rotate(-20deg); */
+  }
+
+  50% {
+    transform: scale(120%);
+    opacity: 50%;
+    /* transform: rotate(20deg); */
+  }
+
+  100% {
+    transform: scale(100%);
+    opacity: 100%;
+    /* transform: rotate(0deg); */
   }
 }
 
