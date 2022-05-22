@@ -534,7 +534,7 @@ h2.location span {
   }
 
   h2.location {
-    text-align: center !important;
+    /* text-align: center !important; */
     margin: inherit auto;
   }
 
@@ -544,5 +544,10 @@ h2.location span {
 
   .charts {
     max-width: 100%;
+  }
+
+  .more {
+    margin-top: 2rem;
+    text-align: center;
   }
 }
