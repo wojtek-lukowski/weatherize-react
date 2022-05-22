@@ -14,8 +14,10 @@ function Dashboard(props) {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    const usernameStorage = localStorage.getItem('weatherize-username')
-    setUser(usernameStorage);
+    setUser(localStorage.getItem('weatherize-username'));
+    if (!localStorage.getItem('weatherize-token')) {
+      setUser(null)
+    }
   })
 
   const logOut = () => {
@@ -55,6 +57,9 @@ function Dashboard(props) {
         console.log(response.data.favorites);
       })
       .catch(error => {
+        localStorage.removeItem('weatherize-token');
+        localStorage.removeItem('weatherize-user');
+        setUser(null)
         console.log('error', error);
       })
   }
@@ -85,6 +90,7 @@ function Dashboard(props) {
         getFavs={getFavs} />
       {/* <Link to='/hourly' className="card"> */}
       <CurrentLocationCard
+        user={user}
         favorites={favorites}
         getFavs={getFavs}
         refreshFavs={refreshFavs}
