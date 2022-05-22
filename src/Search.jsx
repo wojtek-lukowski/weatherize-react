@@ -76,6 +76,7 @@ function Search(props) {
         console.log('error', error);
         alert('Not found. Try other location.');
         setCity('');
+        setIsLogging(false);
         // window.open('/', '_self');
       })
     // console.log('city state set to', city);
