@@ -77,9 +77,7 @@ function Search(props) {
         alert('Not found. Try other location.');
         setCity('');
         setIsLogging(false);
-        // window.open('/', '_self');
       })
-    // console.log('city state set to', city);
     setCityCompleted(true);
   }
 
@@ -89,13 +87,6 @@ function Search(props) {
     axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
-        // console.log('response favs', response.data.favorites);
-        // setFavorites(response.data.favorites);
-        // if (response.data.favorites.includes(city)) {
-        //   setIsInFavs(true)
-        // } else {
-        //   setIsInFavs(false)
-        // }
         console.log(response.data.favorites);
       })
       .catch(error => {
@@ -144,14 +135,9 @@ function Search(props) {
       })
   }
 
-  // console.log('city', city)
-  // console.log('favorites', favorites)
-  // console.log('isInFavs', isInFavs)
-
   return (
     <div className='search-component'>
       <div className='search'>
-        {/* <form> */}
         <input placeholder='Enter a city' id='city-input' type='text' value={city}
           onChange={(e) => { setCity(e.target.value); setCityCompleted(false) }}>
         </input>
@@ -163,7 +149,6 @@ function Search(props) {
             onClick={e => searchCity(e)}
           >Search</button>
         }
-        {/* </form> */}
       </div>
       {cityCompleted &&
         <div className='favs'>
@@ -171,22 +156,6 @@ function Search(props) {
             <div className='current-location-card'>
               <div className='card-header'>
                 <h2 className="location">{city}, <span>{country}</span></h2>
-                {/* {isInFavs ?
-                  <svg
-                    onClick={() => {
-                      setIsInFavs(false)
-                      removeFromFavs(city);
-                    }} width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg> :
-                  <svg onClick={() => {
-                    setIsInFavs(true)
-                    addToFavs(city);
-                  }}
-                    width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                } */}
                 {isInFavs && !favsManipulation &&
                   <svg
                     onClick={() => {

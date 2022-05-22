@@ -336,16 +336,6 @@ export class Hourly extends React.Component {
   }
 
   render() {
-    // console.log('state hourly cards', this.state.hourlyCards);
-    // console.log('state daily cards', this.state.dailyCards);
-    // console.log('state minutely cards', this.state.minutelyCards);
-    // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
-    // console.log('h/d', this.state.hourly)
-    // console.log('rainIn', this.state.rainIn);
-    // console.log(this.state.skyChartDaily);
-    // console.log(this.state.tempChartHourly);
-    // console.log(this.state.dailyCards[0].time.toString());
-
 
     return (
       <div className='content'>

@@ -29,7 +29,6 @@ export class FavsHourly extends React.Component {
 
   async componentDidMount() {
     console.clear();
-    // console.log('favorite hourly props', this.props);
     const url = window.location.href;
     const city = decodeURI(url.split('/').at(-1));
     console.log(url);
@@ -50,17 +49,11 @@ export class FavsHourly extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      // console.clear();
       this.setState({
         position: data.coord,
         country: data.sys.country
       })
       this.getHourly(data.coord.lat, data.coord.lon);
-      // console.log('data.daily', data.daily);
-      // console.log('data.hourly', data.hourly);
-      // console.log('data.minutely', data.minutely);
-      // console.log(data.daily);
-
     } catch (err) {
       console.log(err);
     }
@@ -82,18 +75,14 @@ export class FavsHourly extends React.Component {
 
       const hours48 = hours24.concat(hours24);
 
-      // console.log('hours48', hours48);
-
       let timeNow = new Date();
       timeNow = timeNow.toLocaleTimeString().split('');
       timeNow = timeNow.splice(0, 2).join('');
       timeNow = parseInt(timeNow);
       timeNow = timeNow + 1;
-      // console.log('timeNow', timeNow, typeof timeNow);
 
       const hours48Copy = [...hours48];
       const currentTimeArray = hours48Copy.splice(timeNow).concat(hours48).splice(0, 48);
-      // currentTimeArray[0] = 'Now';
 
       for (let i = 0; i < data.hourly.length; i++) {
 
@@ -227,7 +216,6 @@ export class FavsHourly extends React.Component {
       })
 
       const rainIn = this.state.minutelyCards.findIndex(time => { return time.precipitation === 0 });
-      // const rainArray = this.state.minutelyCards.filter(time => { return time.precipitation === 0 });
       this.setState({
         rainIn
       })
@@ -365,15 +353,6 @@ export class FavsHourly extends React.Component {
   }
 
   render() {
-    // console.log('state hourly cards', this.state.hourlyCards);
-    // console.log('state daily cards', this.state.dailyCards);
-    // console.log('state minutely cards', this.state.minutelyCards);
-    // console.log('rain', this.state.hourlyCards.precipitation.findIndex(1))
-    // console.log('h/d', this.state.hourly)
-    // console.log('rainIn', this.state.rainIn);
-    // console.log(this.state.skyChartDaily);
-    // console.log('state position', this.state.position)
-
 
     return (
       <div className='content'>
@@ -383,7 +362,6 @@ export class FavsHourly extends React.Component {
           </Link>
         </div>
         <div className='hourly-header'>
-          {/* <div className='grey'>Your current location</div> */}
           <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
         </div>
         {this.state.location &&
