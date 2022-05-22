@@ -43,7 +43,7 @@ function App() {
       <h4>Welcome {user}</h4>
       }
       <Router
-      // basename={'/weatherize-react'}
+      basename={'/weatherize-react'}
       >
         <Routes>
       <Route exact path='/' element={ <Dashboard user={user} token={token}logOut={logOut}/> }></Route>

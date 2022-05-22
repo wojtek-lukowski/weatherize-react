@@ -24,6 +24,7 @@ function Registration() {
         const data = response.data;
         console.log(data);
         // window.open('/login', '_self');
+        window.open('/weatherize-react/login', '_self');
       })
       .catch(error => {
         console.log('error', error);

@@ -24,8 +24,8 @@ function Dashboard(props) {
     setUser(null);
     localStorage.removeItem('weatherize-username')
     localStorage.removeItem('weatherize-token')
-    window.open('/', '_self');
-    // window.open('/weatherize-react/', '_self');
+    // window.open('/', '_self');
+    window.open('/weatherize-react/', '_self');
   }
 
   const removeUser = () => {

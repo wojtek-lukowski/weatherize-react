@@ -32,13 +32,13 @@ function Login(props) {
         localStorage.setItem('weatherize-token', data.token)
         props.saveUser(data.user.username, data.token);
         setIsLogging(false);
-        window.open('/', '_self');
-        // window.open('/weatherize-react', '_self');
+        // window.open('/', '_self');
+        window.open('/weatherize-react', '_self');
       })
       .catch(error => {
         console.log('error', error);
-        window.open('/,', '_self');
-        // window.open('/weatherize-react', '_self');
+        // window.open('/,', '_self');
+        window.open('/weatherize-react', '_self');
       })
   }
 
