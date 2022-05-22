@@ -22,14 +22,12 @@ export class CurrentLocationCard extends React.Component {
       loading: true,
       isInFavs: false,
       favsManipulation: false
-      // favorites: []
     }
   }
 
   async componentDidMount() {
     console.log('current init favs', this.state.favorites);
     console.log('current init props favs', this.props.favorites);
-    // this.setState({ favorites: this.props.favorites })
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.getWeather(position.coords.latitude, position.coords.longitude);
@@ -56,7 +54,6 @@ export class CurrentLocationCard extends React.Component {
         tempMin: (data.main.temp_min - 273.15).toFixed(1),
         sky: data.weather[0].main,
         windSpeed: data.wind.speed.toFixed(1),
-        // windDirection: data.wind.deg
       })
 
       let windD = data.wind.deg;
@@ -95,12 +92,10 @@ export class CurrentLocationCard extends React.Component {
   async getFavs(city) {
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
+    this.setState({ user: user })
     try {
       const data = await axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
         { headers: { Authorization: `Bearer ${token}` } })
-      // this.setState({
-      //   favorites: data.data.favorites
-      // })
       if (data.data.favorites.includes(city)) {
         this.setState({
           isInFavs: true
@@ -150,10 +145,11 @@ export class CurrentLocationCard extends React.Component {
     } catch (error) {
       console.log('error', error);
     }
-    // this.getFavs(city);
   }
 
   render() {
+
+    console.log('state user', this.state.user)
 
     return (
       <div className='content'>
@@ -165,26 +161,7 @@ export class CurrentLocationCard extends React.Component {
           <div className='current-location-card current'>
             <div className='card-header'>
               <h2 className="location">{this.state.location}, <span>{this.state.country}</span></h2>
-              {/* {this.state.isInFavs ?
-                <svg
-                  onClick={() => {
-                    this.setState({ isInFavs: false })
-                    this.removeFromFavs(this.state.location);
-                  }}
-                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                :
-                <svg
-                  onClick={() => {
-                    this.setState({ isInFavs: true })
-                    this.addToFavs(this.state.location);
-                  }}
-                  width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              } */}
-              {this.state.isInFavs && !this.state.favsManipulation &&
+              {this.state.isInFavs && !this.state.favsManipulation && this.state.user &&
                 <svg
                   onClick={() => {
                     this.setState({ isInFavs: false })
@@ -193,13 +170,13 @@ export class CurrentLocationCard extends React.Component {
                   <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               }
-              {this.state.isInFavs && this.state.favsManipulation &&
+              {this.state.isInFavs && this.state.favsManipulation && this.state.user &&
                 <svg className='confirmation'
                   width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               }
-              {!this.state.isInFavs && !this.state.favsManipulation &&
+              {!this.state.isInFavs && !this.state.favsManipulation && this.state.user &&
                 <svg onClick={() => {
                   this.setState({ isInFavs: true })
                   this.addToFavs(this.state.location);
@@ -208,7 +185,7 @@ export class CurrentLocationCard extends React.Component {
                   <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               }
-              {!this.state.isInFavs && this.state.favsManipulation &&
+              {!this.state.isInFavs && this.state.favsManipulation && this.state.user &&
                 <svg className='confirmation'
                   width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 1C3.6868 1 1 3.6592 1 6.94C1 9.5884 2.05 15.874 12.3856 22.228C12.5707 22.3406 12.7833 22.4002 13 22.4002C13.2167 22.4002 13.4293 22.3406 13.6144 22.228C23.95 15.874 25 9.5884 25 6.94C25 3.6592 22.3132 1 19 1C15.6868 1 13 4.6 13 4.6C13 4.6 10.3132 1 7 1Z" fill="#A3A3A3" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

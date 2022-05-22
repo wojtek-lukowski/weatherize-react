@@ -85,6 +85,7 @@ function Dashboard(props) {
         getFavs={getFavs} />
       {/* <Link to='/hourly' className="card"> */}
       <CurrentLocationCard
+        user={user}
         favorites={favorites}
         getFavs={getFavs}
         refreshFavs={refreshFavs}
