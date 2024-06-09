@@ -1,8 +1,6 @@
 import React from 'react';
-import { config } from './config';
 import { Link } from 'react-router-dom';
 import { FavsHourly } from './FavsHourly';
-const key = config.API_KEY;
 
 export class SearchedLocation extends React.Component {
 
@@ -28,23 +26,27 @@ export class SearchedLocation extends React.Component {
   }
 
   async weatherCity(city) {
+    const token = localStorage.getItem('weatherize-token')
     try {
-      const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
-      const data = await (await fetch(api)).json();
-      console.log(data);
+      const result = await axios.get(`https://weatherize-app.herokuapp.com/weather`, {
+        params: {
+          lat,
+          lng
+        }
+      },
+        { headers: { Authorization: `Bearer ${token}` } })
+      console.log(result);
       this.setState({
-        location: data.name,
-        country: data.sys.country,
-        temperature: (data.main.temp - 273.15).toFixed(1),
-        feelsLike: (data.main.feels_like - 273.15).toFixed(1),
-        tempMax: (data.main.temp_max - 273.15).toFixed(1),
-        tempMin: (data.main.temp_min - 273.15).toFixed(1),
-        sky: data.weather[0].main,
-        windSpeed: data.wind.speed.toFixed(1),
+        location: result.data.name,
+        country: result.data.sys.country,
+        temperature: (result.data.main.temp - 273.15).toFixed(1),
+        tempMax: (result.data.main.temp_max - 273.15).toFixed(1),
+        sky: result.data.weather[0].main,
+        windSpeed: result.data.wind.speed.toFixed(1),
         // windDirection: data.wind.deg
       })
 
-      let windD = data.wind.deg;
+      let windD = result.data.wind.deg;
 
       if (windD > 348 || windD <= 11) { windD = "N" };
       if (windD > 11 && windD <= 33) { windD = "NNE" };

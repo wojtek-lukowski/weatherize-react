@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { config } from './config';
 import Loading from './Loading';
 import axios from 'axios';
-const key = config.API_KEY;
 
 function Login(props) {
 

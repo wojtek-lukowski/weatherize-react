@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { config } from './config';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Bar, BarChart, ComposedChart } from 'recharts';
 
-const key = config.API_KEY;
-
+const key = '';
 
 export class FavsHourly extends React.Component {
 
@@ -28,12 +26,8 @@ export class FavsHourly extends React.Component {
   }
 
   async componentDidMount() {
-    console.clear();
     const url = window.location.href;
     const city = decodeURI(url.split('/').at(-1));
-    console.log(url);
-    console.log(url.split('/'));
-    console.log(city);
 
     try {
       this.setState({

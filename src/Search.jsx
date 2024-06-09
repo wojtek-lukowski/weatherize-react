@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { config } from './config';
 import Loading from './Loading';
 import axios from 'axios';
 import { LocationCard } from './LocationCard';
 import { SearchedLocation } from './SearchedLocation';
-const key = config.API_KEY;
 
 function Search(props) {
 
@@ -37,11 +35,16 @@ function Search(props) {
   const searchCity = (e) => {
     setIsLogging(true);
     e.preventDefault();
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`)
+    const token = localStorage.getItem('weatherize-token')
+    axios.get('https://weatherize-app.herokuapp.com/city', {
+      params: {
+        city
+      }
+    },
+      { headers: { Authorization: `Bearer ${token}` } })
       // const data = (fetch(api)).json()
       .then(response => {
         const data = response.data;
-        console.log(data);
         // console.log('city from API', data.name);
         getFavs(data.name);
         setCity(data.name);
@@ -87,7 +90,6 @@ function Search(props) {
     axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
-        console.log(response.data.favorites);
       })
       .catch(error => {
         console.log('error', error);
@@ -200,7 +202,7 @@ function Search(props) {
                 city,
                 fromFavorites: true
               }}>
-                <p className='more'>more</p>
+                {/* <p className='more'>more</p> */}
               </Link>
             </div>
           }

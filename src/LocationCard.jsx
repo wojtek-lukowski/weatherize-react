@@ -1,9 +1,7 @@
 import React from 'react';
-import { config } from './config';
 import { Link } from 'react-router-dom';
 import { FavsHourly } from './FavsHourly';
 import axios from 'axios';
-const key = config.API_KEY;
 
 export class LocationCard extends React.Component {
 
@@ -26,29 +24,35 @@ export class LocationCard extends React.Component {
   }
 
   componentDidMount() {
-    // console.log('location card props', this.props);
     this.getFavs(this.props.city);
     this.weatherCity(this.props.city);
   }
 
   async weatherCity(city) {
+    const token = localStorage.getItem('weatherize-token');
+    this.setState({
+      loading: true
+    })
     try {
-      const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`;
-      const data = await (await fetch(api)).json();
-      console.log(data);
+      const result = await axios.get('https://weatherize-app.herokuapp.com/city', {
+        params: {
+          city
+        }
+      },
+        { headers: { Authorization: `Bearer ${token}` } })
+
       this.setState({
-        location: data.name,
-        country: data.sys.country,
-        temperature: (data.main.temp - 273.15).toFixed(1),
-        feelsLike: (data.main.feels_like - 273.15).toFixed(1),
-        tempMax: (data.main.temp_max - 273.15).toFixed(1),
-        tempMin: (data.main.temp_min - 273.15).toFixed(1),
-        sky: data.weather[0].main,
-        windSpeed: data.wind.speed.toFixed(1),
-        // windDirection: data.wind.deg
+        location: result.data.name,
+        country: result.data.sys.country,
+        temperature: (result.data.main.temp - 273.15).toFixed(1),
+        feelsLike: (result.data.main.feels_like - 273.15).toFixed(1),
+        tempMax: (result.data.main.temp_max - 273.15).toFixed(1),
+        tempMin: (result.data.main.temp_min - 273.15).toFixed(1),
+        sky: result.data.weather[0].main,
+        windSpeed: result.data.wind.speed.toFixed(1),
       })
 
-      let windD = data.wind.deg;
+      let windD = result.data.wind.deg;
 
       if (windD > 348 || windD <= 11) { windD = "N" };
       if (windD > 11 && windD <= 33) { windD = "NNE" };
@@ -70,10 +74,13 @@ export class LocationCard extends React.Component {
       this.setState({
         windDirection: windD
       })
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log('error', error);
+      this.setState({
+        loading: false
+      })
     }
-  };
+  }
 
   async getFavs(city) {
     const token = localStorage.getItem('weatherize-token');
@@ -89,7 +96,6 @@ export class LocationCard extends React.Component {
           isInFavs: true
         })
       }
-      console.log(data.data.favorites);
     } catch (error) {
       console.log('error', error);
     }
@@ -165,7 +171,7 @@ export class LocationCard extends React.Component {
             <Link to={{
               pathname: `/${this.state.location}`
             }}>
-              <p className='more'>more</p>
+              {/* <p className='more'>more</p> */}
             </Link>
           </div>
         }

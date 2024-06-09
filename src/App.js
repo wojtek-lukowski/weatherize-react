@@ -44,6 +44,7 @@ function App() {
       }
       <Router
       basename={'/weatherize-react'}
+      // basename={'/'}
       >
         <Routes>
       <Route exact path='/' element={ <Dashboard user={user} token={token}logOut={logOut}/> }></Route>

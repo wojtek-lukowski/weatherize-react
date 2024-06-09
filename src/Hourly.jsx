@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { config } from './config';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, Bar, BarChart, ComposedChart } from 'recharts';
-const key = config.API_KEY;
+const key = '';
 
 
 export class Hourly extends React.Component {
@@ -22,7 +21,6 @@ export class Hourly extends React.Component {
   }
 
   async componentDidMount() {
-    console.clear();
     try {
       const lat = localStorage.getItem('latitude');
       const lng = localStorage.getItem('longitude');
@@ -42,7 +40,6 @@ export class Hourly extends React.Component {
     try {
       const api = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${key}`;
       const data = await (await fetch(api)).json();
-      console.log(data);
 
       //setting up hourly cards
       let preaparingHourlyCards = [];

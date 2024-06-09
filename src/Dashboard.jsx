@@ -2,11 +2,9 @@ import { CurrentLocationCard } from "./CurrentLocationCard";
 import { LocationCard } from "./LocationCard";
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Router, Routes, Link } from 'react-router-dom';
-import { config } from './config';
 import Favorites from './Favorites';
 import Search from './Search';
 import axios from "axios";
-const key = config.API_KEY;
 
 function Dashboard(props) {
 
@@ -54,7 +52,6 @@ function Dashboard(props) {
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
         setFavorites(response.data.favorites)
-        console.log(response.data.favorites);
       })
       .catch(error => {
         localStorage.removeItem('weatherize-token');
@@ -70,7 +67,6 @@ function Dashboard(props) {
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
         const data = response.data;
-        console.log(data);
       })
       .catch(error => {
         console.log('error', error);

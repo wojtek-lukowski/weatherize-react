@@ -1,9 +1,7 @@
 import React from 'react';
-import { config } from './config';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import axios from 'axios';
-const key = config.API_KEY;
 export class CurrentLocationCard extends React.Component {
 
   constructor() {
@@ -38,23 +36,28 @@ export class CurrentLocationCard extends React.Component {
   }
 
   async getWeather(lat, lng) {
+    const token = localStorage.getItem('weatherize-token');
     try {
-      const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${key}`;
-      const data = await (await fetch(api)).json();
-      console.log(data);
-      this.getFavs(data.name);
+      const result = await axios.get(`https://weatherize-app.herokuapp.com/weather`, {
+        params: {
+          lat,
+          lng
+        }
+      },
+        { headers: { Authorization: `Bearer ${token}` } })
+      this.getFavs(result.data.name);
       this.setState({
-        location: data.name,
-        country: data.sys.country,
-        temperature: (data.main.temp - 273.15).toFixed(1),
-        feelsLike: (data.main.feels_like - 273.15).toFixed(1),
-        tempMax: (data.main.temp_max - 273.15).toFixed(1),
-        tempMin: (data.main.temp_min - 273.15).toFixed(1),
-        sky: data.weather[0].main,
-        windSpeed: data.wind.speed.toFixed(1),
+        location: result.data.name,
+        country: result.data.sys.country,
+        temperature: (result.data.main.temp - 273.15).toFixed(1),
+        feelsLike: (result.data.main.feels_like - 273.15).toFixed(1),
+        tempMax: (result.data.main.temp_max - 273.15).toFixed(1),
+        tempMin: (result.data.main.temp_min - 273.15).toFixed(1),
+        sky: result.data.weather[0].main,
+        windSpeed: result.data.wind.speed.toFixed(1),
       })
 
-      let windD = data.wind.deg;
+      let windD = result.data.wind.deg;
 
       if (windD > 348 || windD <= 11) { windD = "N" };
       if (windD > 11 && windD <= 33) { windD = "NNE" };
@@ -77,19 +80,24 @@ export class CurrentLocationCard extends React.Component {
         windDirection: windD
       })
 
-      localStorage.setItem('location', data.name);
-      localStorage.setItem('country', data.sys.country);
-    } catch (err) {
-      console.log(err);
+      localStorage.setItem('location', result.data.name);
+      localStorage.setItem('country', result.data.sys.country);
+      this.setState({
+        loading: false
+      })
+    } catch (error) {
+      console.log('error', error);
+      this.setState({
+        loading: false
+      })
     }
-    this.setState({
-      loading: false
-    })
-  };
+  }
 
   async getFavs(city) {
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
+
+    // if (user) {
     try {
       const data = await axios.get(`https://weatherize-app.herokuapp.com/users/${user}`,
         { headers: { Authorization: `Bearer ${token}` } })
@@ -98,11 +106,11 @@ export class CurrentLocationCard extends React.Component {
           isInFavs: true
         })
       }
-      console.log(data.data.favorites);
     } catch (error) {
       console.log('error', error);
     }
     this.props.getFavs();
+    // }
   }
 
   async addToFavs(city) {
@@ -110,14 +118,12 @@ export class CurrentLocationCard extends React.Component {
     this.setState({ favsManipulation: true });
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
-    console.log('adding to favs:', city);
     if (this.props.favorites.length >= maxFavsNumber) {
       this.removeFromFavs(this.props.favorites[0])
     }
     try {
       const data = await axios.post(`https://weatherize-app.herokuapp.com/users/${user}/${city}`, {},
         { headers: { Authorization: `Bearer ${token}` } })
-      console.log('add confirmation:', data);
       this.getFavs(city);
       this.setState({ favsManipulation: false });
       this.props.refreshFavs();
@@ -128,14 +134,12 @@ export class CurrentLocationCard extends React.Component {
 
   async removeFromFavs(city) {
     this.setState({ favsManipulation: true });
-    console.log('removing from favs:', city);
     const token = localStorage.getItem('weatherize-token');
     const user = localStorage.getItem('weatherize-username');
     console.log(token);
     try {
       const data = await axios.delete(`https://weatherize-app.herokuapp.com/users/${user}/${city}`,
         { headers: { Authorization: `Bearer ${token}` } })
-      console.log('remove confirmation:', data);
       this.getFavs(city);
       this.setState({ favsManipulation: false });
       this.props.refreshFavs();
@@ -198,7 +202,7 @@ export class CurrentLocationCard extends React.Component {
             <Link to={{
               pathname: `/hourly`
             }}>
-              <p className='more'>more</p>
+              {/* <p className='more'>more</p> */}
             </Link>
           </div>
         }
